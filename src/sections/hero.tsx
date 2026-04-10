@@ -1,8 +1,13 @@
 "use client";
 
-import CursorLens from "@/components/cursor-lens";
+import dynamic from "next/dynamic";
+
 import SocialIcon from "@/components/ui/social-icon";
 import { themePalette, useTheme } from "@/components/theme-store";
+
+const CursorLens = dynamic(() => import("@/components/cursor-lens"), {
+  loading: () => <div className="h-full w-full" aria-hidden="true" />,
+})
 
 export default function Hero() {
   const theme = useTheme();

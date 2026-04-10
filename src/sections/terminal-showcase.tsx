@@ -1,16 +1,33 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useEffect, useRef, useState } from 'react'
 
-import PortfolioTerminal, { type PortfolioTerminalHandle } from '@/components/ui/interactive-portfolio-terminal-component'
-import RotatingEarth from '@/components/ui/wireframe-dotted-globe'
+import type { PortfolioTerminalHandle } from '@/components/ui/interactive-portfolio-terminal-component'
 import { portfolioTerminalCommands } from '@/lib/portfolio-terminal-commands'
 import { portfolioTerminalContent } from '@/lib/portfolio-terminal-content'
 import { Globe, Terminal } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import { ScrambleText } from '@/components/ui/scramble-text'
-import { CyberBackground } from '@/components/ui/cyber-background'
 import { useBootReady } from '@/lib/use-boot-ready'
+
+const PortfolioTerminal = dynamic(() => import('@/components/ui/interactive-portfolio-terminal-component'), {
+  loading: () => (
+    <div className="min-h-[24rem] rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)]" />
+  ),
+})
+
+const RotatingEarth = dynamic(() => import('@/components/ui/wireframe-dotted-globe'), {
+  ssr: false,
+  loading: () => <div className="relative z-10 h-[184px] w-full max-w-[18.5rem]" aria-hidden="true" />,
+})
+
+const CyberBackground = dynamic(
+  () => import('@/components/ui/cyber-background').then((mod) => mod.CyberBackground),
+  {
+    ssr: false,
+  },
+)
 
 const GLOBE_INITIAL_ROTATION: [number, number] = [-31, -22]
 

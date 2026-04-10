@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import { Anton, Bricolage_Grotesque, Syne, Unbounded } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import SmoothFollower from "@/components/smooth-follower";
 import BootScreen from "@/components/boot-screen";
+import ClientLayoutEffects from "@/components/client-layout-effects";
 import ServerBootstrapScripts from "@/components/server-bootstrap-scripts";
 import { getThemeScript, STORAGE_KEY } from "@/components/theme-tokens";
 import ThemeToggle from "@/components/theme-toggle";
-import FloatingProgressIndicator from "@/components/floating-progress-indicator";
 import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
@@ -104,9 +103,8 @@ export default function RootLayout({
           scrollResetScript={scrollResetScript}
         />
         <BootScreen />
-        <SmoothFollower />
         <ThemeToggle />
-        <FloatingProgressIndicator />
+        <ClientLayoutEffects />
         {children}
         <SpeedInsights />
         <Analytics />
