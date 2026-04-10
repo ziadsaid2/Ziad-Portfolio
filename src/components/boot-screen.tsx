@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react'
 
+import { markBootReady } from '@/lib/use-boot-ready'
+
 const BOOT_LINES = [
   { text: 'SYS.INIT — KERNEL v4.2.1', delay: 0 },
   { text: 'AUTH.MODULE: VERIFIED', delay: 200 },
@@ -90,7 +92,10 @@ export default function BootScreen() {
 
   const dismiss = useCallback(() => {
     setPhase('exit')
-    setTimeout(() => setIsDismissed(true), 700)
+    setTimeout(() => {
+      markBootReady()
+      setIsDismissed(true)
+    }, 700)
   }, [])
 
   const handleAudio = useCallback((enable: boolean) => {

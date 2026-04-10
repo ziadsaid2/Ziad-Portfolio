@@ -112,6 +112,8 @@ a {
 
 
 .cursor-follower {
+  --cursor-dot-x: 0px;
+  --cursor-dot-y: 0px;
   pointer-events: none;
   position: fixed;
   inset: 0;
@@ -124,29 +126,13 @@ a {
   opacity: 1;
 }
 
-.cursor-follower__dot,
-.cursor-follower__ring {
+.cursor-follower__dot {
   position: absolute;
   border-radius: var(--radius-pill);
-  transform: translate(-50%, -50%);
-}
-
-.cursor-follower__dot {
   width: 0.5rem;
   height: 0.5rem;
   background: var(--color-cursor);
-}
-
-.cursor-follower__ring {
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 1px solid var(--color-cursor);
-  transform: translate(-50%, -50%) scale(0.64);
-  transition: transform var(--motion-base) var(--ease-in-out-standard);
-}
-
-.cursor-follower__ring.is-hovering {
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate3d(var(--cursor-dot-x), var(--cursor-dot-y), 0) translate(-50%, -50%);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -162,8 +148,7 @@ a {
 
   .theme-toggle,
   .theme-toggle__thumb,
-  .cursor-follower,
-  .cursor-follower__ring {
+  .cursor-follower {
     transition-duration: 0.01ms !important;
   }
 }

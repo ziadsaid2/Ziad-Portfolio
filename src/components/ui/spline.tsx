@@ -1,8 +1,9 @@
 'use client'
 
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 
 import { cn } from '@/lib/utils'
+import { useBootReady } from '@/lib/use-boot-ready'
 
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
@@ -24,9 +25,64 @@ function SplineFallback() {
 }
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
+  const bootReady = useBootReady()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [shouldLoad, setShouldLoad] = useState(false)
+
+  useEffect(() => {
+    if (!bootReady || shouldLoad) {
+      return
+    }
+
+    const element = containerRef.current
+
+    if (!element) {
+      return
+    }
+
+    const activate = () => {
+      if (element.getClientRects().length === 0) {
+        return
+      }
+
+      setShouldLoad(true)
+    }
+
+    activate()
+
+    if (shouldLoad) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) {
+          return
+        }
+
+        activate()
+      },
+      { rootMargin: '240px 0px' },
+    )
+
+    observer.observe(element)
+    window.addEventListener('resize', activate)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', activate)
+    }
+  }, [bootReady, shouldLoad])
+
   return (
-    <Suspense fallback={<SplineFallback />}>
-      <Spline scene={scene} className={cn('h-full w-full', className)} />
-    </Suspense>
+    <div ref={containerRef} className={cn('h-full w-full', className)}>
+      {shouldLoad ? (
+        <Suspense fallback={<SplineFallback />}>
+          <Spline scene={scene} className="h-full w-full" />
+        </Suspense>
+      ) : (
+        <SplineFallback />
+      )}
+    </div>
   )
 }

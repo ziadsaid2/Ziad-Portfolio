@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useState, useRef } from "react";
 
+import { useBootReady } from "@/lib/use-boot-ready";
+
 const navItems = [
   { id: "hero", label: "00 // INTRO", short: "INTRO" },
   { id: "about", label: "01 // DOSSIER", short: "ABOUT" },
@@ -13,6 +15,7 @@ const navItems = [
 ];
 
 export default function FloatingProgressIndicator() {
+  const bootReady = useBootReady();
   const [activeSection, setActiveSection] = useState("hero");
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -22,6 +25,10 @@ export default function FloatingProgressIndicator() {
   const idleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    if (!bootReady) {
+      return;
+    }
+
     setIsMounted(true);
 
     const resetIdle = () => {
@@ -56,9 +63,9 @@ export default function FloatingProgressIndicator() {
       window.removeEventListener("scroll", handleScroll);
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current);
     };
-  }, []);
+  }, [bootReady]);
 
-  if (!isMounted) return null;
+  if (!bootReady || !isMounted) return null;
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);

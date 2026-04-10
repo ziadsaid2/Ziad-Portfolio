@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import PortfolioTerminal, { type PortfolioTerminalHandle } from '@/components/ui/interactive-portfolio-terminal-component'
 import RotatingEarth from '@/components/ui/wireframe-dotted-globe'
@@ -10,28 +10,63 @@ import { Globe, Terminal } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import { ScrambleText } from '@/components/ui/scramble-text'
 import { CyberBackground } from '@/components/ui/cyber-background'
+import { useBootReady } from '@/lib/use-boot-ready'
 
 const GLOBE_INITIAL_ROTATION: [number, number] = [-31, -22]
 
 export default function TerminalShowcase() {
+  const bootReady = useBootReady()
   const terminalRef = useRef<PortfolioTerminalHandle>(null)
+  const sectionRef = useRef<HTMLElement>(null)
   const [isGlobePaused, setIsGlobePaused] = useState(true)
+  const [shouldMountDecor, setShouldMountDecor] = useState(false)
+
+  useEffect(() => {
+    if (!bootReady || shouldMountDecor) {
+      return
+    }
+
+    const section = sectionRef.current
+
+    if (!section) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) {
+          return
+        }
+
+        setShouldMountDecor(true)
+      },
+      { rootMargin: '500px 0px' },
+    )
+
+    observer.observe(section)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [bootReady, shouldMountDecor])
 
   return (
-    <section id="terminal" className="relative py-16 px-6 md:px-10 overflow-hidden">
+    <section ref={sectionRef} id="terminal" className="relative py-16 px-6 md:px-10 overflow-hidden">
       {/* Page background */}
       <div className="absolute inset-0 bg-[var(--color-page-background)]" />
 
       {/* Top fade — blends with the section above */}
       <div className="absolute top-0 inset-x-0 h-56 bg-gradient-to-b from-[var(--color-page-background)] via-[color-mix(in_srgb,var(--color-page-background)_40%,transparent)] to-transparent z-10 pointer-events-none" />
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: false, amount: 0, margin: "800px 0px" }}
-        transition={{ duration: 1 }}
-      >
-        <CyberBackground />
-      </motion.div>
+      {shouldMountDecor ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0, margin: "800px 0px" }}
+          transition={{ duration: 1 }}
+        >
+          <CyberBackground />
+        </motion.div>
+      ) : null}
       
       <div className="mx-auto max-w-[1420px] relative z-10">
         {/* Section Header */}
@@ -190,15 +225,17 @@ export default function TerminalShowcase() {
                   <div className="pointer-events-none absolute inset-x-10 top-6 h-16 rounded-full bg-[var(--color-accent-primary)]/20 dark:bg-[var(--color-accent-primary)]/12 blur-3xl opacity-80" />
                   <div className="pointer-events-none absolute inset-x-12 bottom-4 h-14 rounded-full bg-[color-mix(in_srgb,var(--color-accent-tertiary)_25%,transparent)] dark:bg-[color-mix(in_srgb,var(--color-accent-tertiary)_18%,transparent)] blur-3xl opacity-80" />
                   
-                  <RotatingEarth
-                    width={296}
-                    height={184}
-                    initialRotation={GLOBE_INITIAL_ROTATION}
-                    rotationSpeed={0.22}
-                    scaleMultiplier={1.05}
-                    isPaused={isGlobePaused}
-                    className="relative z-10 max-w-[18.5rem]"
-                  />
+                  {shouldMountDecor ? (
+                    <RotatingEarth
+                      width={296}
+                      height={184}
+                      initialRotation={GLOBE_INITIAL_ROTATION}
+                      rotationSpeed={0.22}
+                      scaleMultiplier={1.05}
+                      isPaused={isGlobePaused}
+                      className="relative z-10 max-w-[18.5rem]"
+                    />
+                  ) : <div className="relative z-10 h-[184px] w-full max-w-[18.5rem]" aria-hidden="true" />}
                 </div>
               </motion.div>
             </div>
