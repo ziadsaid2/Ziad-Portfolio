@@ -1,0 +1,383 @@
+/* ═══════════════════════════════════════════════
+   Boot Screen — HUD Preloader
+   ═══════════════════════════════════════════════ */
+
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-page-background) !important;
+  color: var(--color-page-foreground);
+  isolation: isolate;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.boot-screen--exit {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+/* Scanlines */
+.boot-screen__scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    color-mix(in srgb, var(--color-page-foreground) 2%, transparent) 2px,
+    color-mix(in srgb, var(--color-page-foreground) 2%, transparent) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grid */
+.boot-screen__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image:
+    linear-gradient(to right, var(--color-accent-primary) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-accent-primary) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Ambient glow */
+.boot-screen__glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(100px);
+}
+
+.boot-screen__glow--1 {
+  top: -15%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  background: var(--color-accent-primary);
+  opacity: 0.08;
+}
+
+.boot-screen__glow--2 {
+  bottom: -10%;
+  right: -5%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 500px;
+  max-height: 500px;
+  background: var(--color-accent-tertiary, var(--color-accent-primary));
+  opacity: 0.06;
+}
+
+/* Container */
+.boot-screen__container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 520px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.boot-screen__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-page-foreground) 10%, transparent);
+}
+
+.boot-screen__header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.boot-screen__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-page-foreground) 20%, transparent);
+}
+
+.boot-screen__dot--active {
+  background: var(--color-accent-primary);
+  box-shadow: 0 0 8px var(--color-accent-primary);
+  animation: boot-pulse 1.5s ease-in-out infinite;
+}
+
+.boot-screen__header-text {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent-primary);
+}
+
+.boot-screen__header-text--dim {
+  color: color-mix(in srgb, var(--color-page-foreground) 40%, transparent);
+  font-weight: 500;
+}
+
+/* Boot log */
+.boot-screen__log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 160px;
+}
+
+.boot-screen__line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.boot-screen__line--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.boot-screen__line-prefix {
+  color: var(--color-accent-primary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.boot-screen__line-text {
+  color: color-mix(in srgb, var(--color-page-foreground) 60%, transparent);
+}
+
+.boot-screen__line--visible:last-child .boot-screen__line-text {
+  color: var(--color-accent-primary);
+  font-weight: 600;
+}
+
+.boot-screen__cursor {
+  animation: boot-blink 0.6s step-end infinite;
+  color: var(--color-accent-primary);
+  font-weight: 700;
+}
+
+/* Progress bar */
+.boot-screen__progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.boot-screen__progress-track {
+  flex: 1;
+  height: 3px;
+  background: color-mix(in srgb, var(--color-page-foreground) 8%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.boot-screen__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-tertiary, var(--color-accent-primary)));
+  border-radius: 2px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--color-accent-primary);
+}
+
+.boot-screen__progress-label {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--color-page-foreground) 50%, transparent);
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+/* Audio prompt */
+.boot-screen__prompt {
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.boot-screen__prompt--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.boot-screen__prompt-border {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-accent-primary) 30%, transparent),
+    transparent
+  );
+  margin-bottom: 1.5rem;
+}
+
+.boot-screen__prompt-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-page-foreground) 8%, transparent);
+  background: color-mix(in srgb, var(--color-page-foreground) 2%, transparent);
+}
+
+.boot-screen__prompt-icon {
+  color: var(--color-accent-primary);
+  opacity: 0.7;
+}
+
+.boot-screen__prompt-text {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-page-foreground) 70%, transparent);
+  margin: 0;
+}
+
+.boot-screen__prompt-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Buttons */
+.boot-screen__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.8rem;
+  border: 1px solid;
+  background: transparent;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.boot-screen__btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.boot-screen__btn:hover::before {
+  opacity: 1;
+}
+
+.boot-screen__btn--primary {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.boot-screen__btn--primary::before {
+  background: color-mix(in srgb, var(--color-accent-primary) 10%, transparent);
+}
+
+.boot-screen__btn--primary:hover {
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent-primary) 25%, transparent);
+  transform: translateY(-1px);
+}
+
+.boot-screen__btn--secondary {
+  border-color: color-mix(in srgb, var(--color-page-foreground) 15%, transparent);
+  color: color-mix(in srgb, var(--color-page-foreground) 50%, transparent);
+}
+
+.boot-screen__btn--secondary::before {
+  background: color-mix(in srgb, var(--color-page-foreground) 3%, transparent);
+}
+
+.boot-screen__btn--secondary:hover {
+  border-color: color-mix(in srgb, var(--color-page-foreground) 30%, transparent);
+  color: color-mix(in srgb, var(--color-page-foreground) 70%, transparent);
+}
+
+.boot-screen__btn-label {
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer */
+.boot-screen__footer {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-page-foreground) 6%, transparent);
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-page-foreground) 20%, transparent);
+}
+
+/* Animations */
+@keyframes boot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes boot-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .boot-screen__container {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .boot-screen__line {
+    font-size: 9px;
+  }
+
+  .boot-screen__prompt-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .boot-screen__btn {
+    width: 100%;
+  }
+}
