@@ -62,13 +62,12 @@ export const metadata: Metadata = {
     title: "Ziad Said — Full Stack Developer",
     description: "Full Stack Developer specializing in SaaS products, CRM systems, and messaging platforms. Building modern web experiences with Next.js, React, TypeScript, and NestJS.",
     siteName: "Ziad Said Portfolio",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Ziad Said — Full Stack Developer" }],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "Ziad Said — Full Stack Developer",
     description: "Full Stack Developer specializing in SaaS products, CRM systems, and messaging platforms.",
-    images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: SITE_URL,
