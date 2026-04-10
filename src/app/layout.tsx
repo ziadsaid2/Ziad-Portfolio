@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Bricolage_Grotesque, Syne, Unbounded } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import SmoothFollower from "@/components/smooth-follower";
 import BootScreen from "@/components/boot-screen";
 import ServerBootstrapScripts from "@/components/server-bootstrap-scripts";
@@ -108,6 +109,7 @@ export default function RootLayout({
         <ThemeToggle />
         <FloatingProgressIndicator />
         {children}
+        <Analytics />
       </body>
     </html>
   );
