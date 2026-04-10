@@ -8,6 +8,7 @@ import ServerBootstrapScripts from "@/components/server-bootstrap-scripts";
 import { getThemeScript, STORAGE_KEY } from "@/components/theme-tokens";
 import ThemeToggle from "@/components/theme-toggle";
 import FloatingProgressIndicator from "@/components/floating-progress-indicator";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
 const anton = Anton({
@@ -35,8 +36,6 @@ const wideFont = Unbounded({
   display: "swap",
   variable: "--font-wide",
 });
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://your-domain.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
