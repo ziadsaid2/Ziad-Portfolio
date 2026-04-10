@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Bricolage_Grotesque, Syne, Unbounded } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import SmoothFollower from "@/components/smooth-follower";
 import BootScreen from "@/components/boot-screen";
@@ -109,6 +110,7 @@ export default function RootLayout({
         <ThemeToggle />
         <FloatingProgressIndicator />
         {children}
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>
