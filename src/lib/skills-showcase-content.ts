@@ -14,24 +14,24 @@ export const skillsShowcaseCopy = {
 
 export const aiToolGroups: SkillShowcaseGroup[] = [
   {
-    title: 'AI Assistants',
+    title: 'Agentic Strategy',
     note: 'Generative and agentic tools that support coding, research, and technical strategy.',
-    items: ['Cursor', 'ChatGPT', 'Claude', 'Grok', 'OpenCode'],
+    items: ['Antigravity', 'Cursor', 'ChatGPT', 'Claude', 'Hugging Face', 'Grok'],
   },
   {
-    title: 'Code Assistance',
+    title: 'Code Intelligence',
     note: 'Helper tools and protocols for faster build and test cycles.',
-    items: ['Codex', 'GitHub Copilot', 'MCP', 'Speckit'],
+    items: ['Codex', 'GitHub Copilot', 'MCP', 'LangChain', 'Speckit'],
   },
   {
-    title: 'Infra & Cloud',
+    title: 'Deployment Lab',
     note: 'Platform solutions for rapid product deployment and AI model orchestration.',
-    items: ['Google AI Studio', 'Vercel', 'v0', 'Google Stitch'],
+    items: ['Google AI Studio', 'Vercel', 'v0', 'Replicate', 'Pinecone'],
   },
   {
-    title: 'UI & Design',
+    title: 'Visual Synthesis',
     note: 'Visual tools and component libraries for building high-fidelity interfaces.',
-    items: ['Figma', 'Spline', 'Magic UI', '21st.dev'],
+    items: ['Figma', 'Spline', 'Magic UI', '21st.dev', 'DALL-E'],
   },
 ]
 

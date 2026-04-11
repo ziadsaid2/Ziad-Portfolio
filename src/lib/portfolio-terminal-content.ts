@@ -58,7 +58,9 @@ export const portfolioTerminalContent: PortfolioTerminalContent = {
       title: 'Backend',
       items: [
         { name: 'Node.js', level: 90 },
+        { name: 'Express', level: 88 },
         { name: 'NestJS', level: 88 },
+        { name: 'JWT', level: 90 },
         { name: 'Fastify', level: 84 },
         { name: 'Socket.IO', level: 82 },
         { name: 'NATS', level: 75 },
@@ -67,6 +69,8 @@ export const portfolioTerminalContent: PortfolioTerminalContent = {
     {
       title: 'Databases',
       items: [
+        { name: 'MongoDB', level: 87 },
+        { name: 'Mongoose', level: 85 },
         { name: 'PostgreSQL', level: 86 },
         { name: 'Redis', level: 80 },
         { name: 'Prisma', level: 88 },
@@ -81,6 +85,7 @@ export const portfolioTerminalContent: PortfolioTerminalContent = {
         { name: 'AWS S3', level: 78 },
         { name: 'Git', level: 90 },
         { name: 'GitHub', level: 92 },
+        { name: 'Postman', level: 90 },
         { name: 'Datadog', level: 74 },
         { name: 'Jira', level: 85 },
         { name: 'Confluence', level: 82 },
@@ -159,7 +164,7 @@ export const portfolioTerminalContent: PortfolioTerminalContent = {
     additionalLearning: [
       'Advanced Backend Architecture & Scalability',
       'Real-time Systems (Socket.IO, NATS, Redis)',
-      'AI-Driven Workflows (Cursor, MCP, LLM Integration)',
+      'AI-Driven Workflows (Antigravity, Cursor, MCP, LLM Integration)',
     ],
   },
   contacts: [...profileContacts],

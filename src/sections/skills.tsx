@@ -21,11 +21,15 @@ const skillIcons: Record<string, { slug?: string; color: string; url?: string; s
   'zod': { slug: 'zod', color: '#3E67B1' },
   
   'node.js': { slug: 'nodedotjs', color: '#339933' },
+  'express': { slug: 'express', color: '#ffffff' },
   'nestjs': { slug: 'nestjs', color: '#E0234E' },
+  'jwt': { slug: 'jsonwebtokens', color: '#D63AFF' },
   'fastify': { slug: 'fastify', color: '#ffffff' },
   'socket.io': { slug: 'socketdotio', color: '#ffffff' },
   'nats': { slug: 'natsdotio', color: '#27AAE1' },
   
+  'mongodb': { slug: 'mongodb', color: '#47A248' },
+  'mongoose': { slug: 'mongoose', color: '#880000' },
   'postgresql': { slug: 'postgresql', color: '#4169E1' },
   'redis': { slug: 'redis', color: '#FF4438' },
   'prisma': { slug: 'prisma', color: '#2D3748' },
@@ -36,26 +40,33 @@ const skillIcons: Record<string, { slug?: string; color: string; url?: string; s
   'aws s3': { url: '/icons/aws.png', color: '#FF9900' },
   'git': { slug: 'git', color: '#F05032' },
   'github': { slug: 'github', color: '#ffffff' },
+  'postman': { slug: 'postman', color: '#FF6C37' },
   'datadog': { slug: 'datadog', color: '#632CA6' },
   
   'jira': { slug: 'jira', color: '#0052CC' },
   'confluence': { slug: 'confluence', color: '#0052CC' },
   'slack': { url: '/icons/slack.svg', color: '#4A154B', scale: 1.25 },
 
+  'antigravity': { slug: 'googlegemini', color: '#9b30ff' },
   'cursor': { slug: 'cursor', color: '#00D1FF' },
-  'chatgpt': { slug: 'openai', color: '#74AA9C' },
+  'chatgpt': { slug: 'perplexity', color: '#00A3BF' },
   'claude': { slug: 'anthropic', color: '#D97757' },
-  'grok': { slug: 'grok', color: '#000000' },
-  'codex': { slug: 'openai', color: '#000000' },
+  'hugging face': { slug: 'huggingface', color: '#FFD21E' },
+  'grok': { slug: 'x', color: '#ffffff' },
+  'codex': { slug: 'probot', color: '#ffffff' },
   'github copilot': { slug: 'githubcopilot', color: '#24292E' },
+  'langchain': { slug: 'langchain', color: '#1C3C3C' },
   'google ai studio': { slug: 'google', color: '#4285F4' },
   'figma': { slug: 'figma', color: '#F24E1E' },
-  'spline': { slug: 'spline', color: '#000000' },
+  'spline': { slug: 'blender', color: '#F5792A' },
   'vercel': { slug: 'vercel', color: '#000000' },
+  'v0': { slug: 'vercel', color: '#000000' },
+  'replicate': { slug: 'replicate', color: '#000000' },
+  'pinecone': { slug: 'mongodb', color: '#47A248' },
   'google stitch': { slug: 'google', color: '#EA4335' },
   'magic ui': { slug: 'framer', color: '#0055FF' },
   '21st.dev': { slug: 'react', color: '#61DAFB' },
-  'v0': { slug: 'vercel', color: '#000000' },
+  'dall-e': { slug: 'framer', color: '#0055FF' },
   'speckit': { slug: 'googledrive', color: '#4285F4' },
   'mcp': { slug: 'github', color: '#ffffff' },
 
@@ -139,13 +150,13 @@ function SkillColumn({
             )}
           >
             <div className={cn("flex items-center gap-2 mb-0.5", isRight && "flex-row-reverse")}>
-              <span className="font-mono text-[8px] uppercase tracking-[0.3em] font-black text-[var(--color-accent-primary)]/40 leading-none">
+              <span className="font-mono text-[8px] uppercase tracking-[0.3em] font-black text-[var(--color-accent-primary)] leading-none">
                 0{groupIdx + 1}
               </span>
-              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--color-page-foreground)_30%,transparent)] font-bold">
+              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--color-page-foreground)_70%,transparent)] font-bold">
                 {group.title}
               </span>
-              <div className="h-[1px] w-4 bg-[color-mix(in_srgb,var(--color-page-foreground)_10%,transparent)]" />
+              <div className="h-[1px] w-4 bg-[color-mix(in_srgb,var(--color-page-foreground)_30%,transparent)]" />
             </div>
 
             <div className={cn("flex flex-wrap gap-1.5 sm:gap-2", isRight && "justify-end")}>
@@ -263,10 +274,10 @@ export default function SkillsSection() {
                 className="flex items-center gap-3 mb-5"
               >
                 <div className="w-1.5 h-1.5 bg-[var(--color-accent-primary)] rounded-full" />
-                <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-page-foreground)_60%,transparent)] font-bold">
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-page-foreground)_90%,transparent)] font-bold">
                   Core Skills
                 </h3>
-                <div className="h-[1px] flex-1 bg-[color-mix(in_srgb,var(--color-page-foreground)_15%,transparent)]" />
+                <div className="h-[1px] flex-1 bg-[color-mix(in_srgb,var(--color-page-foreground)_35%,transparent)]" />
               </motion.div>
 
               <SkillColumn groups={technicalGroups} align="left" />
@@ -348,10 +359,10 @@ export default function SkillsSection() {
                 className="flex items-center gap-3 mb-5 flex-row-reverse"
               >
                 <div className="w-1.5 h-1.5 bg-[var(--color-accent-primary)] rounded-full" />
-                <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-page-foreground)_60%,transparent)] font-bold">
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-page-foreground)_90%,transparent)] font-bold">
                   AI Support
                 </h3>
-                <div className="h-[1px] flex-1 bg-[color-mix(in_srgb,var(--color-page-foreground)_15%,transparent)]" />
+                <div className="h-[1px] flex-1 bg-[color-mix(in_srgb,var(--color-page-foreground)_35%,transparent)]" />
               </motion.div>
 
               <SkillColumn groups={aiToolGroups} align="right" />
