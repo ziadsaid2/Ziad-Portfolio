@@ -152,7 +152,7 @@ function CertRow({ cert, index }: { cert: typeof CERTS[number]; index: number })
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-70px' }}
       transition={{ delay: index * 0.08, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="relative"
+      className="relative flex-1 flex flex-col"
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
     >
@@ -172,7 +172,7 @@ function CertRow({ cert, index }: { cert: typeof CERTS[number]; index: number })
       <motion.div
         animate={{ y: hovered ? -8 : 0 }}
         transition={{ type: 'spring', stiffness: 360, damping: 26 }}
-        className="relative overflow-hidden rounded-[3px]"
+        className="relative overflow-hidden rounded-[3px] flex-1 flex flex-col"
         style={{
           border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent-primary) 22%, transparent)' : 'color-mix(in srgb, var(--color-page-foreground) 9%, transparent)'}`,
           background: hovered
@@ -196,66 +196,23 @@ function CertRow({ cert, index }: { cert: typeof CERTS[number]; index: number })
         />
 
 
-        <div className="relative grid gap-5 p-6 md:grid-cols-[5.25rem_minmax(0,1fr)_11.5rem] md:gap-6 md:p-7">
-
-          {/* ── Number column ── */}
-          <div className="flex items-start gap-3 md:block">
-            {/* Mobile: pill */}
-            <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border md:hidden"
+        {/* Giant Watermark Number */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-20">
+           <span
+              className="select-none leading-none text-transparent"
               style={{
-                borderColor: 'color-mix(in srgb, var(--color-accent-primary) 18%, transparent)',
-                background: 'color-mix(in srgb, var(--color-accent-primary) 6%, transparent)',
+                fontFamily: 'var(--font-wide)',
+                fontSize: 'clamp(12rem, 20vw, 22rem)',
+                WebkitTextStroke: `1px color-mix(in srgb, var(--color-accent-primary) ${hovered ? 25 : 15}%, transparent)`,
+                filter: hovered ? 'drop-shadow(0 0 20px color-mix(in srgb, var(--color-accent-primary) 15%, transparent))' : 'none',
+                transition: '-webkit-text-stroke 0.4s ease, filter 0.5s ease',
               }}
-            >
-              <span
-                className="text-[10px] font-mono tracking-[0.24em]"
-                style={{ color: 'color-mix(in srgb, var(--color-accent-primary) 72%, transparent)' }}
-              >
-                {cert.num}
-              </span>
-            </div>
+           >
+             {cert.num}
+           </span>
+        </div>
 
-            {/* Desktop: 3D perspective number */}
-            <div className="hidden md:flex md:flex-col gap-3">
-              <div style={{ perspective: '260px' }}>
-                <span
-                  className="block select-none leading-none tracking-[-0.06em] text-transparent"
-                  style={{
-                    fontFamily: 'var(--font-wide)',
-                    fontSize: 'clamp(3rem, 3.7vw, 4rem)',
-                    WebkitTextStroke: `1px color-mix(in srgb, var(--color-accent-primary) ${hovered ? 50 : 28}%, transparent)`,
-                    transform: 'rotateY(-22deg)',
-                    filter: hovered
-                      ? 'drop-shadow(3px 0 8px color-mix(in srgb, var(--color-accent-primary) 20%, transparent))'
-                      : 'none',
-                    transition: '-webkit-text-stroke 0.4s ease, filter 0.4s ease',
-                  }}
-                >
-                  {cert.num}
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <span
-                  className="block text-[7px] font-mono uppercase tracking-[0.32em]"
-                  style={{ color: 'color-mix(in srgb, var(--color-page-foreground) 22%, transparent)' }}
-                >
-                  archive_index
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className="h-[3px] w-[3px] rounded-full"
-                    style={{ background: 'color-mix(in srgb, var(--color-accent-primary) 65%, transparent)' }}
-                  />
-                  <span
-                    className="h-px w-9"
-                    style={{ background: 'color-mix(in srgb, var(--color-accent-primary) 18%, transparent)' }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="relative z-10 flex-1 grid gap-5 p-6 md:grid-cols-[minmax(0,1fr)_11.5rem] md:gap-6 md:p-7">
 
           {/* ── Main content ── */}
           <div className="min-w-0 flex flex-col justify-between gap-4">
@@ -565,10 +522,15 @@ export default function CertificationsSection() {
         </motion.div>
 
         {/* ── Cert cards ── */}
-        <div className="flex flex-col gap-3">
-          {CERTS.map((cert, i) => (
-            <CertRow key={cert.id} cert={cert} index={i} />
-          ))}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {CERTS.map((cert, i) => {
+            const isLastOdd = CERTS.length % 2 !== 0 && i === CERTS.length - 1;
+            return (
+              <div key={cert.id} className={`flex flex-col ${isLastOdd ? 'lg:col-span-2' : ''}`}>
+                <CertRow cert={cert} index={i} />
+              </div>
+            )
+          })}
         </div>
 
 

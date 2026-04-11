@@ -149,11 +149,23 @@ export default function ExperienceSection() {
                       {/* Subtle inner grid mask */}
                       <div className="pointer-events-none absolute inset-0 opacity-[0.25] mix-blend-overlay group-hover/article:opacity-[0.4] transition-opacity duration-700 [background-image:linear-gradient(to_right,color-mix(in_srgb,var(--color-accent-primary)_50%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--color-accent-primary)_50%,transparent)_1px,transparent_1px)] [background-size:2rem_2rem] [mask-image:radial-gradient(ellipse_60%_80%_at_50%_0%,black,transparent)]" />
                       
+                      {/* Abstract Technical Mark (Calm & Geometric Void Filler) */}
+                      <div className="hidden sm:flex absolute top-8 right-8 items-center justify-center opacity-[0.12] group-hover/article:opacity-30 transition-all duration-1000 select-none pointer-events-none">
+                        <div className="relative w-12 h-12 flex items-center justify-center">
+                          {/* Outer thin ring */}
+                          <div className="absolute inset-0 border-[0.5px] border-[var(--color-accent-primary)] rounded-full opacity-40" />
+                          {/* Inner decorative crosshair / axis */}
+                          <div className="w-16 h-[0.5px] bg-gradient-to-r from-transparent via-[var(--color-accent-primary)] to-transparent rotate-[-45deg] opacity-60" />
+                          {/* Minimalist orbital dot */}
+                          <div className="absolute top-1.5 right-1.5 w-1 h-1 bg-[var(--color-accent-primary)] rounded-full shadow-[0_0_8px_var(--color-accent-primary)]" />
+                        </div>
+                      </div>
+
                       <div className="relative z-10 flex flex-col gap-8">
                         {/* Header Row: Company & Location */}
-                        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between mb-2">
-                          <div className="flex flex-col gap-3">
-                              <div className="flex items-center gap-3">
+                        <div className="flex flex-col mb-4 pr-0 sm:pr-24">
+                          <div className="flex flex-col gap-4">
+                              <div className="flex flex-wrap items-center gap-3">
                                 {/* Company Name */}
                                 <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-page-foreground)] leading-none">
                                   {item.company}
@@ -177,33 +189,38 @@ export default function ExperienceSection() {
                                 </div>
                               </div>
 
-                            {/* Professional Role - Now accurately positioned as a sub-heading */}
-                            {(!item.roles || item.roles.length === 0) && (
-                              <div className="flex items-center gap-3">
-                                <div className="h-0.5 w-4 bg-[var(--color-accent-primary)] opacity-40" />
-                                <p className="text-lg font-semibold text-[color-mix(in_srgb,var(--color-page-foreground)_90%,transparent)] tracking-tight">
-                                  {item.role}
-                                </p>
-                              </div>
-                            )}
-                          </div>
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                              {/* Professional Role */}
+                              {(!item.roles || item.roles.length === 0) && (
+                                <div className="flex items-center gap-3">
+                                  <div className="h-0.5 w-4 bg-[var(--color-accent-primary)] opacity-40" />
+                                  <p className="text-lg font-semibold text-[color-mix(in_srgb,var(--color-page-foreground)_90%,transparent)] tracking-tight">
+                                    {item.role}
+                                  </p>
+                                </div>
+                              )}
 
-                          {/* Meta info (Location) */}
-                          <div className="text-xs font-mono text-[color-mix(in_srgb,var(--color-page-foreground)_40%,transparent)] mt-1 md:mt-2 xl:text-right">
-                             <div className="flex flex-col md:items-end">
-                                <span className="uppercase tracking-[0.2em] text-[9px] opacity-60 mb-0.5">Deployment</span>
-                                <span className="tracking-tight block font-medium group-hover/article:text-[color-mix(in_srgb,var(--color-page-foreground)_60%,transparent)] transition-colors">
-                                  {item.location.split('·').map((part, idx, arr) => {
-                                    const isRemote = part.trim().toLowerCase() === 'remote';
-                                    return (
-                                      <span key={idx} className={isRemote ? 'text-[var(--color-accent-primary)] font-bold' : ''}>
-                                        {part.trim()}
-                                        {idx < arr.length - 1 && <span className="text-[color-mix(in_srgb,var(--color-page-foreground)_20%,transparent)] mx-1.5">·</span>}
-                                      </span>
-                                    );
-                                  })}
-                                </span>
-                             </div>
+                              {/* Separator if no multiple roles */}
+                              {(!item.roles || item.roles.length === 0) && (
+                                <div className="hidden sm:block w-[1px] h-4 bg-[color-mix(in_srgb,var(--color-page-foreground)_20%,transparent)]" />
+                              )}
+
+                              {/* Meta info (Location) aligned left */}
+                              <div className="text-xs font-mono text-[color-mix(in_srgb,var(--color-page-foreground)_40%,transparent)] flex items-center gap-2">
+                                 <span className="uppercase tracking-[0.2em] text-[10px] opacity-60">Deployment:</span>
+                                 <span className="tracking-tight font-medium group-hover/article:text-[color-mix(in_srgb,var(--color-page-foreground)_70%,transparent)] transition-colors">
+                                   {item.location.split('·').map((part, idx, arr) => {
+                                     const isRemote = part.trim().toLowerCase() === 'remote';
+                                     return (
+                                       <span key={idx} className={isRemote ? 'text-[var(--color-accent-primary)] font-bold' : ''}>
+                                         {part.trim()}
+                                         {idx < arr.length - 1 && <span className="text-[color-mix(in_srgb,var(--color-page-foreground)_20%,transparent)] mx-1.5">·</span>}
+                                       </span>
+                                     );
+                                   })}
+                                 </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
@@ -243,9 +260,10 @@ export default function ExperienceSection() {
                                 
                                 {/* Role Card Banner */}
                                 <div className="flex flex-col gap-1 w-full bg-[color-mix(in_srgb,var(--color-page-foreground)_2%,transparent)] border border-[color-mix(in_srgb,var(--color-page-foreground)_8%,transparent)] rounded-tl-sm rounded-tr-xl rounded-b-xl overflow-hidden hover:bg-[color-mix(in_srgb,var(--color-page-foreground)_4%,transparent)] transition-colors">
-                                  <div className="flex justify-between items-center bg-[color-mix(in_srgb,var(--color-page-foreground)_4%,transparent)] px-5 py-3 border-b border-[color-mix(in_srgb,var(--color-page-foreground)_5%,transparent)]">
+                                  <div className="flex flex-wrap items-center gap-3 bg-[color-mix(in_srgb,var(--color-page-foreground)_4%,transparent)] px-5 py-3 border-b border-[color-mix(in_srgb,var(--color-page-foreground)_5%,transparent)]">
                                     <h4 className="font-bold text-[0.95rem] text-[color-mix(in_srgb,var(--color-page-foreground)_90%,transparent)]">{r.title}</h4>
-                                    <span className="font-mono text-[9px] uppercase tracking-widest text-[color-mix(in_srgb,var(--color-page-foreground)_50%,transparent)]">
+                                    <div className="h-3 w-[1px] bg-[color-mix(in_srgb,var(--color-page-foreground)_20%,transparent)]" />
+                                    <span className="font-mono text-[9px] uppercase tracking-widest text-[color-mix(in_srgb,var(--color-page-foreground)_45%,transparent)]">
                                       {r.startDate 
                                         ? `${r.period.split('·')[0].trim()} // ${calculateTenure(r.startDate)}`
                                         : r.period}

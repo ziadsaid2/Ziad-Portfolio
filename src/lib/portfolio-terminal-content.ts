@@ -116,15 +116,14 @@ export const portfolioTerminalContent: PortfolioTerminalContent = {
       technologies: ['Next.js', 'React', 'TypeScript', 'NestJS', 'Node.js', 'PostgreSQL', 'Sequelize', 'Redis', 'Socket.IO', 'NATS', 'AWS S3', 'Tailwind CSS', 'TanStack React Query', 'Zod', 'Docker'],
     },
     {
-      period: 'Dec 2025 - Present · 5 mos',
+      period: 'Dec 2025 - Apr 2026 · 5 mos',
       role: 'Full Stack Developer',
       company: 'Eduncy',
       location: 'Istanbul, Türkiye · Remote',
       roles: [
         {
           title: 'Full Stack Developer (Full-time)',
-          period: 'Feb 2026 - Present',
-          startDate: '2026-02-01',
+          period: 'Feb 2026 - Apr 2026 · 3 mos',
           bullets: [
             'Working across both frontend and backend to build analytics dashboards, real-time communication features, and integration-heavy systems.',
             'Developing and maintaining seamless internal workflows that power CRM operations for study-abroad agencies.'
@@ -132,8 +131,7 @@ export const portfolioTerminalContent: PortfolioTerminalContent = {
         },
         {
           title: 'Full Stack Developer (Internship)',
-          period: 'Dec 2025 - Jan 2026',
-          startDate: '2025-12-01',
+          period: 'Dec 2025 - Jan 2026 · 2 mos',
           bullets: [
             'Started contributing as an intern to scalable internal systems and CRM workflows.',
             'Gained hands-on experience by rapidly pushing production-oriented tasks and resolving business flow challenges.'

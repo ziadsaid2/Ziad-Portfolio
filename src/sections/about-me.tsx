@@ -40,7 +40,7 @@ const WINDOWS: WindowMeta[] = [
     title: 'profile.sys',
     icon: User,
     accentVar: '--color-accent-primary',
-    pos: { x: 85, y: 22 },
+    pos: { x: 40, y: 22 },
     width: 268,
   },
   {
@@ -48,16 +48,16 @@ const WINDOWS: WindowMeta[] = [
     title: 'bio.txt',
     icon: Terminal,
     accentVar: '--color-accent-primary',
-    pos: { x: 380, y: 42 },
-    width: 390,
-    maxH: 240,
+    pos: { x: 320, y: 30 },
+    width: 490,
+    maxH: 320,
   },
   {
     id: 'stack',
     title: 'focus.json',
     icon: Code2,
     accentVar: '--color-accent-primary',
-    pos: { x: 820, y: 70 },
+    pos: { x: 825, y: 70 },
     width: 296,
     maxH: 220,
   },
@@ -75,7 +75,7 @@ const INIT: Record<WindowId, WinState> = {
   profile: { open: true, minimized: false, z: 10 },
   bio:     { open: true, minimized: false, z: 11 },
   stack:   { open: true, minimized: false, z: 9  },
-  contact: { open: true, minimized: false, z: 12 },
+  contact: { open: false, minimized: false, z: 12 },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -127,23 +127,23 @@ function ProfileContent() {
 
 function BioContent() {
   return (
-    <div className="p-4 flex flex-col gap-3 overflow-y-auto" style={{ maxHeight: 232 }}>
-      <span className="text-[8px] font-mono tracking-widest text-[var(--color-page-foreground)]/25 select-none">
+    <div className="p-5 flex flex-col gap-4 overflow-y-auto" style={{ maxHeight: 310 }}>
+      <span className="text-[9px] font-mono tracking-widest text-[var(--color-page-foreground)]/25 select-none">
         // bio.txt — read only
       </span>
-      <p className="text-[10.5px] leading-[1.95] text-[var(--color-page-foreground)]/60 font-sans">
+      <p className="text-[14px] leading-[1.85] text-[var(--color-page-foreground)]/75 font-sans">
         I'm a{' '}
         <span className="text-[var(--color-accent-primary)] font-semibold">Full Stack Developer</span>{' '}
         contributing to SaaS products, CRM systems, and messaging platforms —
         solving complex technical issues and improving integrations across services.
       </p>
-      <p className="text-[10.5px] leading-[1.95] text-[var(--color-page-foreground)]/60 font-sans">
+      <p className="text-[14px] leading-[1.85] text-[var(--color-page-foreground)]/75 font-sans">
         My work includes debugging production issues, investigating system behavior
         with{' '}
         <span className="text-[var(--color-accent-primary)] font-semibold">Datadog</span>,
         and resolving problems related to webhooks, message flows, and real-time updates.
       </p>
-      <p className="text-[10.5px] leading-[1.95] text-[var(--color-page-foreground)]/60 font-sans">
+      <p className="text-[14px] leading-[1.85] text-[var(--color-page-foreground)]/75 font-sans">
         What sets me apart is being{' '}
         <span className="text-[var(--color-accent-primary)] font-semibold">solution-oriented</span>{' '}
         and persistent. I use AI as part of my workflow to speed up research and
@@ -273,7 +273,14 @@ function OsWindow({
       transition={{ type: 'spring', stiffness: 380, damping: 28 }}
       onPointerDown={onFocus}
       onDragStart={onFocus}
-      className="absolute rounded-lg overflow-hidden border border-[color-mix(in_srgb,var(--color-page-foreground)_9%,transparent)] bg-[var(--color-page-background)]"
+      className={cn(
+        "absolute rounded-lg overflow-hidden border border-[color-mix(in_srgb,var(--color-page-foreground)_9%,transparent)] bg-[var(--color-page-background)]",
+        "max-md:!left-4 max-md:!w-[calc(100%-32px)]",
+        meta.id === 'profile' && "max-md:!top-[40px]",
+        meta.id === 'bio' && "max-md:!top-[55px]",
+        meta.id === 'stack' && "max-md:!top-[70px]",
+        meta.id === 'contact' && "max-md:!top-[85px]",
+      )}
       style={{
         top: meta.pos.y,
         left: meta.pos.x,
@@ -315,7 +322,10 @@ function OsWindow({
         </div>
 
         {/* Drag handle visual hint */}
-        <GripHorizontal className="w-3 h-3 text-[var(--color-page-foreground)]/15 shrink-0" />
+        <div className="flex items-center gap-1.5 text-[var(--color-page-foreground)]/20 shrink-0 select-none pointer-events-none hidden sm:flex">
+          <span className="text-[7.5px] font-mono uppercase tracking-[0.15em] mt-[1px]">DRAG</span>
+          <GripHorizontal className="w-3 h-3" />
+        </div>
       </div>
 
       {/* ── Content ── */}
@@ -326,30 +336,6 @@ function OsWindow({
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Hint overlay (fades out after 3s)
-// ─────────────────────────────────────────────────────────────────────────────
-
-function DragHint() {
-  const [visible, setVisible] = useState(true)
-  useEffect(() => {
-    const id = setTimeout(() => setVisible(false), 3200)
-    return () => clearTimeout(id)
-  }, [])
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : -4 }}
-      transition={{ duration: 0.6 }}
-      className="absolute top-3 right-3 z-50 pointer-events-none select-none"
-    >
-      <span className="text-[8px] font-mono tracking-widest text-[var(--color-page-foreground)]/25 flex items-center gap-1.5">
-        <GripHorizontal className="w-2.5 h-2.5" />
-        drag windows freely
-      </span>
-    </motion.div>
-  )
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main section
@@ -499,8 +485,6 @@ export default function AboutMeSection() {
           {/* Drag area — windows are constrained to this ref */}
           <div ref={desktopRef} className="absolute inset-x-0 bottom-0" style={{ top: 28, bottom: 56 }}>
 
-            {/* Floating drag hint */}
-            <DragHint />
 
             {/* Windows */}
             {WINDOWS.map(m => (
@@ -517,15 +501,15 @@ export default function AboutMeSection() {
           </div>
 
           {/* ── macOS-style Dock ── */}
-          <div className="absolute bottom-2 inset-x-0 h-14 flex items-center justify-between px-4 z-50">
+          <div className="absolute bottom-2 inset-x-0 h-14 flex items-center justify-center md:justify-between px-2 md:px-4 z-50">
 
             {/* Status — left */}
-            <div className="flex items-center gap-2 opacity-40">
+            <div className="hidden md:flex items-center gap-2 opacity-40">
               <Wifi className="w-3 h-3 text-[var(--color-page-foreground)]/50" />
             </div>
 
             {/* Dock icons — center */}
-            <div className="flex items-end gap-1 px-3 py-2 rounded-2xl border border-[color-mix(in_srgb,var(--color-page-foreground)_8%,transparent)] bg-[var(--color-page-background)]">
+            <div className="flex items-end gap-0.5 sm:gap-1 px-2 sm:px-3 py-2 rounded-2xl border border-[color-mix(in_srgb,var(--color-page-foreground)_8%,transparent)] bg-[var(--color-page-background)]">
 
               {/* Decorative system apps */}
               {([
@@ -584,24 +568,11 @@ export default function AboutMeSection() {
             </div>
 
             {/* Spacer — right (mirrors left status width) */}
-            <div className="w-20" />
+            <div className="hidden md:block w-20" />
           </div>
         </motion.div>
 
-        {/* Mobile fallback — hidden on md+ (desktop shows the OS) */}
-        <div className="md:hidden mt-4 flex flex-col gap-3">
-          {[
-            { label: 'Role', val: 'Full Stack Developer' },
-            { label: 'Status', val: 'Available' },
-            { label: 'Location', val: 'Cairo, Egypt' },
-            { label: 'Experience', val: '2+ Years' },
-          ].map(({ label, val }) => (
-            <div key={label} className="flex justify-between items-center py-2 border-b border-[color-mix(in_srgb,var(--color-page-foreground)_6%,transparent)]">
-              <span className="text-[9px] font-mono tracking-widest text-[var(--color-page-foreground)]/30 uppercase">{label}</span>
-              <span className="text-xs font-mono text-[var(--color-page-foreground)]/65">{val}</span>
-            </div>
-          ))}
-        </div>
+
 
       </div>
 
