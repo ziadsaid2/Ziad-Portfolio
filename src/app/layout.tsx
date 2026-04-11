@@ -55,21 +55,34 @@ export const metadata: Metadata = {
     "SaaS",
     "CRM",
   ],
-  openGraph: {
+    openGraph: {
     type: "website",
     url: SITE_URL,
     title: "Ziad Said — Full Stack Developer",
     description: "Full Stack Developer specializing in SaaS products, CRM systems, and messaging platforms. Building modern web experiences with Next.js, React, TypeScript, and NestJS.",
     siteName: "Ziad Said Portfolio",
     locale: "en_US",
+    images: [
+      {
+        url: "/og-image.jpg?v=4",
+        width: 1200,
+        height: 630,
+        alt: "Ziad Said Portfolio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ziad Said — Full Stack Developer",
     description: "Full Stack Developer specializing in SaaS products, CRM systems, and messaging platforms.",
+    images: ["/og-image.jpg?v=4"],
   },
   alternates: {
     canonical: SITE_URL,
+  },
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
