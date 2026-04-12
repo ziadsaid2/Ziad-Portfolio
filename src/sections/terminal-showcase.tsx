@@ -160,7 +160,7 @@ export default function TerminalShowcase() {
             }}
             className="order-2 flex flex-col gap-8 lg:order-2"
           >
-            <div className="grid grid-cols-2 gap-4 max-[399px]:grid-cols-1 lg:grid-cols-1">
+            <div className="flex flex-col gap-4">
               {/* Cheat-sheet Panel */}
               <motion.div
                 variants={{
@@ -201,7 +201,7 @@ export default function TerminalShowcase() {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onMouseEnter={() => setIsGlobePaused(false)}
                 onMouseLeave={() => setIsGlobePaused(true)}
-                className="relative min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md"
+                className="hidden lg:block relative min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md"
               >
                 <div className="mb-3 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
