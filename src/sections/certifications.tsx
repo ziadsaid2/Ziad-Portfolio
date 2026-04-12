@@ -148,10 +148,10 @@ function CertRow({ cert, index }: { cert: typeof CERTS[number]; index: number })
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-70px' }}
-      transition={{ delay: index * 0.08, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '-10px' }}
+      transition={{ delay: index * 0.05, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex-1 flex flex-col"
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}

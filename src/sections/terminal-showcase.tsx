@@ -128,8 +128,8 @@ export default function TerminalShowcase() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, margin: '-10px' }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="w-full order-1 lg:order-1"
           >
             <div className="relative group">
@@ -147,14 +147,14 @@ export default function TerminalShowcase() {
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: '-10px' }}
             variants={{
               hidden: { opacity: 0 },
               visible: {
                 opacity: 1,
                 transition: {
-                  staggerChildren: 0.1,
-                  delayChildren: 0.2
+                  staggerChildren: 0.05,
+                  delayChildren: 0.1
                 }
               }
             }}
@@ -165,7 +165,7 @@ export default function TerminalShowcase() {
               <motion.div
                 variants={{
                   hidden: { opacity: 0, x: 20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
                 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md"
@@ -196,7 +196,7 @@ export default function TerminalShowcase() {
               <motion.div 
                 variants={{
                   hidden: { opacity: 0, x: 20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
                 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onMouseEnter={() => setIsGlobePaused(false)}
