@@ -1,4 +1,7 @@
-import { FileText } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { ChevronUp, FileText } from "lucide-react";
 
 import { profileLinks } from "@/lib/profile";
 import { cn } from "@/lib/utils";
@@ -89,6 +92,8 @@ export default function ButtonSocialIconDemo({
   whatsappHref = profileLinks.whatsapp,
   resumeHref,
 }: ButtonSocialIconDemoProps) {
+  const [expanded, setExpanded] = useState(false);
+
   const items: SocialItem[] = [
     {
       href: linkedinHref,
@@ -113,14 +118,27 @@ export default function ButtonSocialIconDemo({
   ];
 
   return (
-    <div
-      aria-label="Social links"
-      className={cn("hero-social-group", className)}
-      role="group"
-    >
-      {items.map((item) => (
-        <SocialAction key={item.label} {...item} />
-      ))}
+    <div className={cn("hero-social-expandable", expanded && "is-expanded", className)}>
+      <button
+        aria-expanded={expanded}
+        aria-label={expanded ? "Close social links" : "Open social links"}
+        className="hero-social-toggle"
+        data-cursor="interactive"
+        onClick={() => setExpanded((v) => !v)}
+        type="button"
+      >
+        <ChevronUp aria-hidden="true" className="hero-social-toggle__icon" strokeWidth={1.5} />
+      </button>
+
+      <div
+        aria-label="Social links"
+        className="hero-social-group"
+        role="group"
+      >
+        {items.map((item) => (
+          <SocialAction key={item.label} {...item} />
+        ))}
+      </div>
     </div>
   );
 }

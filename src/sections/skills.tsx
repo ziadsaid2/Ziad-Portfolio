@@ -222,7 +222,7 @@ export default function SkillsSection() {
 
       <SplineMouseTracker className="mx-auto max-w-[1420px] relative z-10">
         {/* Section Header */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative group/header">
+        <div className="mb-10 flex flex-row flex-wrap items-center gap-4 md:gap-6 relative group/header">
           {/* Corner Accents for Title Area */}
           <div className="absolute -top-4 -left-4 w-8 h-8 border-t border-l border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-tl-lg pointer-events-none" />
           <div className="absolute top-1/2 -right-4 w-4 h-[1px] bg-gradient-to-l from-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] to-transparent pointer-events-none" />
@@ -239,7 +239,7 @@ export default function SkillsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl md:text-5xl font-bold tracking-wide"
+            className="text-3xl md:text-5xl font-bold tracking-wide"
           >
             Skills <span className="text-[color-mix(in_srgb,var(--color-page-foreground)_40%,transparent)]">& Tools</span>
           </motion.h2>
