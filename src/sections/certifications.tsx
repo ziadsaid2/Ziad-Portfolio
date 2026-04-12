@@ -148,10 +148,10 @@ function CertRow({ cert, index }: { cert: typeof CERTS[number]; index: number })
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-70px' }}
-      transition={{ delay: index * 0.08, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '-10px' }}
+      transition={{ delay: index * 0.05, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex-1 flex flex-col"
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
@@ -437,7 +437,7 @@ export default function CertificationsSection() {
       <div className="mx-auto max-w-[1420px] relative z-10">
 
         {/* ── Section header ── */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative group/header">
+        <div className="mb-10 flex flex-row flex-wrap items-center gap-4 md:gap-6 relative group/header">
           <div className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none overflow-hidden opacity-[0.12] dark:opacity-[0.02] transition-opacity duration-1000 group-hover/header:opacity-[0.18] dark:group-hover/header:opacity-[0.04]">
             <span className="text-[5.5rem] md:text-[8rem] font-black tracking-tighter uppercase whitespace-nowrap text-[var(--color-accent-primary)] block text-right leading-none">
               Archives
@@ -451,7 +451,7 @@ export default function CertificationsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl md:text-5xl font-bold tracking-wide"
+            className="text-3xl md:text-5xl font-bold tracking-wide"
           >
             Technical{' '}
             <span style={{ color: 'color-mix(in srgb, var(--color-page-foreground) 40%, transparent)' }}>

@@ -392,7 +392,7 @@ export default function AboutMeSection() {
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
           }}
-          className="mb-12 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative group/header"
+          className="mb-12 flex flex-row flex-wrap items-center gap-4 md:gap-6 relative group/header"
         >
           <div className="absolute -top-4 -left-4 w-6 h-6 border-t border-l border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-tl-md pointer-events-none" />
 
@@ -407,7 +407,7 @@ export default function AboutMeSection() {
               hidden:   { opacity: 0, y: 30 },
               visible:  { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
             }}
-            className="text-4xl md:text-5xl font-bold tracking-wide whitespace-nowrap"
+            className="text-3xl md:text-5xl font-bold tracking-wide whitespace-nowrap"
           >
             About <span className="text-[color-mix(in_srgb,var(--color-page-foreground)_40%,transparent)]">Me</span>
           </motion.h2>

@@ -222,7 +222,7 @@ export default function SkillsSection() {
 
       <SplineMouseTracker className="mx-auto max-w-[1420px] relative z-10">
         {/* Section Header */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative group/header">
+        <div className="mb-10 flex flex-row flex-wrap items-center gap-4 md:gap-6 relative group/header">
           {/* Corner Accents for Title Area */}
           <div className="absolute -top-4 -left-4 w-8 h-8 border-t border-l border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-tl-lg pointer-events-none" />
           <div className="absolute top-1/2 -right-4 w-4 h-[1px] bg-gradient-to-l from-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] to-transparent pointer-events-none" />
@@ -239,7 +239,7 @@ export default function SkillsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl md:text-5xl font-bold tracking-wide"
+            className="text-3xl md:text-5xl font-bold tracking-wide"
           >
             Skills <span className="text-[color-mix(in_srgb,var(--color-page-foreground)_40%,transparent)]">& Tools</span>
           </motion.h2>
@@ -369,19 +369,7 @@ export default function SkillsSection() {
             </div>
           </div>
 
-          {/* ─── Mobile/Tablet Robot (below columns on smaller screens) ─── */}
-          <div className="xl:hidden relative mx-auto flex min-h-[24rem] w-full max-w-[20rem] flex-col items-center justify-center mt-6 sm:min-h-[28rem] sm:max-w-[24rem]">
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color-mix(in_srgb,var(--color-accent-primary)_6%,transparent)] blur-2xl sm:h-[22rem] sm:w-[22rem]" />
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[15rem] w-[15rem] -translate-x-1/2 -translate-y-[50%] rounded-full border border-[color-mix(in_srgb,var(--color-page-foreground)_7%,transparent)] bg-[radial-gradient(circle_at_center,color-mix(in_srgb,var(--color-page-background)_66%,transparent),transparent_74%)] sm:h-[19rem] sm:w-[19rem]" />
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[12rem] w-[12rem] -translate-x-1/2 -translate-y-[43%] rounded-full bg-[color-mix(in_srgb,var(--color-accent-tertiary)_7%,transparent)] blur-2xl sm:h-[15rem] sm:w-[15rem]" />
-
-            <div aria-hidden="true" className="absolute inset-0 pointer-events-none" data-cursor="interactive">
-              <SplineScene
-                scene={ROBOT_SCENE}
-                className="select-none scale-[1.14] translate-y-[3%] opacity-92 [mask-image:radial-gradient(closest-side,black_0%,black_75%,transparent_100%)]"
-              />
-            </div>
-          </div>
+{/* Mobile/Tablet Robot removed: hidden on smaller screens for better performance and usability */}
 
         </div>
 

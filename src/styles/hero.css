@@ -15,6 +15,7 @@
   }
 }
 
+
 .hero-frame {
   --portrait-frame-width: min(72vw, 44rem);
   --hero-image-size: auto min(145vh, 180vw);
@@ -22,6 +23,7 @@
   min-height: var(--hero-min-height);
   overflow: hidden;
   border-radius: 0;
+  contain: layout style;
   background:
     radial-gradient(circle at 18% 16%,
       color-mix(in srgb, var(--color-accent-primary) 18%, transparent) 0%,
@@ -265,7 +267,7 @@
 @container (max-width: 58rem) {
   .hero-frame {
     --portrait-frame-width: min(80vw, 30rem);
-    --hero-image-size: auto min(130vh, 130vw);
+    --hero-image-size: auto calc(var(--hero-min-height) * 1.3);
   }
 
   .hero-copy {
@@ -277,15 +279,18 @@
   }
 }
 
+.hero-social-toggle {
+  display: none;
+}
+
 @container (max-width: 40rem) {
   .hero-frame {
     --portrait-frame-width: min(88vw, 24rem);
-    --hero-image-size: auto min(100vh, 110vw);
+    --hero-image-size: auto calc(var(--hero-min-height) * 1.15);
   }
 
   .hero-content {
     align-items: flex-start;
-    padding-top: clamp(5rem, 12vh, 7rem);
     padding-bottom: clamp(1.5rem, 4vh, 2rem);
   }
 
@@ -294,6 +299,7 @@
   }
 
   .hero-title {
+    font-size: clamp(3.5rem, 22vw, 16rem);
     max-width: 12ch;
   }
 
@@ -301,8 +307,59 @@
     max-width: 100%;
   }
 
-  .hero-social-group {
-    gap: 0.5rem;
+  .hero-social-label {
+    display: none;
+  }
+
+  .hero-social-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2.4rem, 10vw, 2.8rem);
+    height: clamp(2.4rem, 10vw, 2.8rem);
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-toggle-background) 90%, transparent) 0%,
+      color-mix(in srgb, var(--color-hero-background) 88%, transparent) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-accent-primary) 18%, var(--color-hero-line));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--color-accent-primary);
+    pointer-events: auto;
+    cursor: none !important;
+  }
+
+  .hero-social-toggle__icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.35s var(--ease-out-expo);
+  }
+
+  .hero-social-expandable.is-expanded .hero-social-toggle__icon {
+    transform: rotate(180deg);
+  }
+
+  .hero-social-expandable {
+    position: relative;
+  }
+
+  .hero-social-expandable .hero-social-group {
+    position: absolute;
+    bottom: calc(100% + 0.4rem);
+    left: 0;
+    flex-direction: column;
+    gap: 0.4rem;
+    opacity: 0;
+    transform: translateY(0.5rem);
+    pointer-events: none;
+    transition:
+      opacity 0.3s var(--ease-out-expo),
+      transform 0.3s var(--ease-out-expo);
+  }
+
+  .hero-social-expandable.is-expanded .hero-social-group {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .hero-social-link {
@@ -311,10 +368,44 @@
   }
 
   .hero-frame::before {
-    inset: var(--space-sm) var(--space-sm) var(--space-xs) var(--space-sm);
+    inset: var(--space-sm) clamp(0.875rem, 3vw, var(--space-md));
+  }
+
+  .hero-copy--social,
+  .hero-copy--role {
+    transform: none;
   }
 
   .hero-canvas::after {
     bottom: var(--space-sm);
   }
+}
+
+
+/* ─── Cursor Blob Orbit Animations ──────────────────────────────────────
+   Replaces JS useTime() + useTransform() — runs entirely on the GPU.
+   --orbit-r is set as an inline CSS variable from the component.
+   ──────────────────────────────────────────────────────────────────── */
+@keyframes cursor-orbit-1 {
+  0%   { transform: translate(0px, var(--orbit-r)); }
+  25%  { transform: translate(var(--orbit-r), 0px); }
+  50%  { transform: translate(0px, calc(-1 * var(--orbit-r))); }
+  75%  { transform: translate(calc(-1 * var(--orbit-r)), 0px); }
+  100% { transform: translate(0px, var(--orbit-r)); }
+}
+
+@keyframes cursor-orbit-2 {
+  0%   { transform: translate(var(--orbit-r), 0px); }
+  25%  { transform: translate(0px, var(--orbit-r)); }
+  50%  { transform: translate(calc(-1 * var(--orbit-r)), 0px); }
+  75%  { transform: translate(0px, calc(-1 * var(--orbit-r))); }
+  100% { transform: translate(var(--orbit-r), 0px); }
+}
+
+.cursor-sat-1 {
+  animation: cursor-orbit-1 3.14s linear infinite;
+}
+
+.cursor-sat-2 {
+  animation: cursor-orbit-2 1.57s linear infinite;
 }

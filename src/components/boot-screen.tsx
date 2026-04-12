@@ -366,22 +366,26 @@ export default function BootScreen() {
           </div>
         </div>
 
-        {/* Audio prompt — top right */}
+        {/* Audio prompt */}
         <div
+          className="absolute z-[3] inset-0 md:inset-auto md:top-8 md:right-8 flex items-center justify-center p-4 backdrop-blur-[2px] md:backdrop-blur-none bg-[var(--color-page-background)]/60 md:bg-transparent"
           style={{
-            position: 'absolute',
-            top: '2rem',
-            right: '2rem',
-            zIndex: 3,
             opacity: phase === 'prompt' ? 1 : 0,
-            transform: phase === 'prompt' ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.98)',
-            transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             pointerEvents: phase === 'prompt' ? 'auto' : 'none',
+            transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
           <div
             style={{
-              display: 'flex',
+              transform: phase === 'prompt' ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.98)',
+              transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              width: '100%',
+              maxWidth: '320px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               gap: '1rem',
@@ -482,6 +486,7 @@ export default function BootScreen() {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
 

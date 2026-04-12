@@ -110,6 +110,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${anton.variable} ${bricolage.variable} ${syne.variable} ${wideFont.variable} antialiased`}
     >
+      <head>
+        <link rel="preload" href="/hero/base.png" as="image" fetchPriority="high" />
+        <link rel="preload" href="/hero/reveal.png" as="image" fetchPriority="high" />
+      </head>
       <body>
         <ServerBootstrapScripts
           themeScript={themeScript}

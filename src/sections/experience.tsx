@@ -54,13 +54,13 @@ export default function ExperienceSection() {
               <div className="absolute -top-4 -left-4 w-8 h-8 border-t border-l border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-tl-lg pointer-events-none" />
               <div className="absolute top-1/2 -right-4 w-4 h-[1px] bg-gradient-to-l from-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] to-transparent pointer-events-none" />
               
-              <div className="relative">
-                <motion.h2 
+              <div className="relative flex flex-row flex-wrap items-center gap-4">
+                <motion.h2
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide mb-4 whitespace-nowrap"
+                  className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide whitespace-nowrap"
                 >
                   Experience
                 </motion.h2>
