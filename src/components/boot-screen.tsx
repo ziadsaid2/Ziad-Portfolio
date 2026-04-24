@@ -98,25 +98,7 @@ export default function BootScreen() {
     }, 700)
   }, [])
 
-  const handleAudio = useCallback((enable: boolean) => {
-    if (enable) {
-      try {
-        const ctx = new AudioContext()
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
-        osc.type = 'sine'
-        osc.frequency.setValueAtTime(80, ctx.currentTime)
-        gain.gain.setValueAtTime(0, ctx.currentTime)
-        gain.gain.linearRampToValueAtTime(0.03, ctx.currentTime + 2)
-        osc.connect(gain)
-        gain.connect(ctx.destination)
-        osc.start()
-        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 4)
-        osc.stop(ctx.currentTime + 4.1)
-      } catch {
-        // Audio not supported
-      }
-    }
+  const handleContinue = useCallback(() => {
     dismiss()
   }, [dismiss])
 
@@ -366,7 +348,7 @@ export default function BootScreen() {
           </div>
         </div>
 
-        {/* Audio prompt */}
+        {/* Ready prompt */}
         <div
           className="absolute z-[3] inset-0 md:inset-auto md:top-8 md:right-8 flex items-center justify-center p-4 backdrop-blur-[2px] md:backdrop-blur-none bg-[var(--color-page-background)]/60 md:bg-transparent"
           style={{
@@ -394,21 +376,15 @@ export default function BootScreen() {
               background: 'color-mix(in srgb, var(--color-page-foreground) 2%, transparent)',
             }}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-accent-primary)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ opacity: 0.7 }}
-            >
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-            </svg>
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: '50%',
+                background: 'var(--color-accent-primary)',
+                boxShadow: '0 0 12px color-mix(in srgb, var(--color-accent-primary) 35%, transparent)',
+              }}
+            />
 
             <p
               style={{
@@ -420,71 +396,40 @@ export default function BootScreen() {
                 margin: 0,
               }}
             >
-              Enable ambient audio?
+              System ready
             </p>
 
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.25rem' }}>
-              <button
-                type="button"
-                onClick={() => handleAudio(true)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0.6rem 1.8rem',
-                  border: '1px solid var(--color-accent-primary)',
-                  background: 'transparent',
-                  color: 'var(--color-accent-primary)',
-                  fontFamily: 'inherit',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: '0.25em',
-                  textTransform: 'uppercase' as const,
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'color-mix(in srgb, var(--color-accent-primary) 10%, transparent)'
-                  e.currentTarget.style.boxShadow = '0 0 20px color-mix(in srgb, var(--color-accent-primary) 25%, transparent)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.boxShadow = 'none'
-                }}
-              >
-                ENABLE
-              </button>
-              <button
-                type="button"
-                onClick={() => handleAudio(false)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0.6rem 1.8rem',
-                  border: '1px solid color-mix(in srgb, var(--color-page-foreground) 15%, transparent)',
-                  background: 'transparent',
-                  color: 'color-mix(in srgb, var(--color-page-foreground) 50%, transparent)',
-                  fontFamily: 'inherit',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: '0.25em',
-                  textTransform: 'uppercase' as const,
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--color-page-foreground) 30%, transparent)'
-                  e.currentTarget.style.color = 'color-mix(in srgb, var(--color-page-foreground) 70%, transparent)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--color-page-foreground) 15%, transparent)'
-                  e.currentTarget.style.color = 'color-mix(in srgb, var(--color-page-foreground) 50%, transparent)'
-                }}
-              >
-                SKIP
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleContinue}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.6rem 1.8rem',
+                marginTop: '0.25rem',
+                border: '1px solid var(--color-accent-primary)',
+                background: 'transparent',
+                color: 'var(--color-accent-primary)',
+                fontFamily: 'inherit',
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase' as const,
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'color-mix(in srgb, var(--color-accent-primary) 10%, transparent)'
+                e.currentTarget.style.boxShadow = '0 0 20px color-mix(in srgb, var(--color-accent-primary) 25%, transparent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              ENTER
+            </button>
           </div>
         </div>
         </div>
