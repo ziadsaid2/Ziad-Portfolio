@@ -4,18 +4,13 @@ import dynamic from 'next/dynamic'
 import { useEffect, useRef, useState } from 'react'
 
 import type { PortfolioTerminalHandle } from '@/components/ui/interactive-portfolio-terminal-component'
+import PortfolioTerminal from '@/components/ui/interactive-portfolio-terminal-component'
 import { portfolioTerminalCommands } from '@/lib/portfolio-terminal-commands'
 import { portfolioTerminalContent } from '@/lib/portfolio-terminal-content'
 import { Globe, Terminal } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import { ScrambleText } from '@/components/ui/scramble-text'
 import { useBootReady } from '@/lib/use-boot-ready'
-
-const PortfolioTerminal = dynamic(() => import('@/components/ui/interactive-portfolio-terminal-component'), {
-  loading: () => (
-    <div className="min-h-[24rem] rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)]" />
-  ),
-})
 
 const RotatingEarth = dynamic(() => import('@/components/ui/wireframe-dotted-globe'), {
   ssr: false,
@@ -82,21 +77,21 @@ export default function TerminalShowcase() {
           <div className="absolute -top-4 -left-4 w-8 h-8 border-t border-l border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-tl-lg pointer-events-none" />
           <div className="absolute top-1/2 -right-4 w-4 h-[1px] bg-gradient-to-l from-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] to-transparent pointer-events-none" />
           
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+          <motion.h2
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
             className="text-4xl md:text-5xl font-bold tracking-wide"
           >
             Terminal <span className="text-[color-mix(in_srgb,var(--color-page-foreground)_40%,transparent)]">Interface</span>
           </motion.h2>
 
           <motion.div
-            initial={{ opacity: 0, x: -15 }}
+            initial={{ opacity: 0, x: -8 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
             className="flex items-center gap-3 shrink-0"
           >
             <div className="h-[1px] w-8 md:w-16 bg-[var(--color-accent-primary)] hidden md:block" />
@@ -108,11 +103,11 @@ export default function TerminalShowcase() {
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.12fr)_360px] lg:gap-8">
           {/* Terminal Section */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: '-10px' }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.99 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.04 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="w-full order-1 lg:order-1"
           >
             <div className="relative group">
@@ -127,29 +122,10 @@ export default function TerminalShowcase() {
           </motion.div>
 
           {/* Technical Manifest Sidebar */}
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-10px' }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.05,
-                  delayChildren: 0.1
-                }
-              }
-            }}
-            className="order-2 flex flex-col gap-8 lg:order-2"
-          >
+          <div className="order-2 flex flex-col gap-8 lg:order-2">
             <div className="flex flex-col gap-4">
               {/* Cheat-sheet Panel */}
               <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: 20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
-                }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md"
               >
@@ -177,10 +153,6 @@ export default function TerminalShowcase() {
               </motion.div>
 
               <motion.div 
-                variants={{
-                  hidden: { opacity: 0, x: 20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
-                }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onMouseEnter={() => setIsGlobePaused(false)}
                 onMouseLeave={() => setIsGlobePaused(true)}
@@ -239,7 +211,7 @@ export default function TerminalShowcase() {
                 </div>
               </motion.div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

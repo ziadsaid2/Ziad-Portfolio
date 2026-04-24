@@ -142,16 +142,16 @@ function Barcode({ id, active }: { id: string; active: boolean }) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-function CertRow({ cert, index }: { cert: typeof CERTS[number]; index: number }) {
+function CertRow({ cert }: { cert: typeof CERTS[number] }) {
   const [hovered, setHovered] = useState(false)
   const hasCredential = (cert.href as string) !== '#'
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10px' }}
-      transition={{ delay: index * 0.05, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.04 }}
+      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex-1 flex flex-col"
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
@@ -447,10 +447,10 @@ export default function CertificationsSection() {
           <div className="absolute top-1/2 -right-4 w-4 h-[1px] bg-gradient-to-l from-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] to-transparent pointer-events-none" />
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
             className="text-3xl md:text-5xl font-bold tracking-wide"
           >
             Technical{' '}
@@ -460,10 +460,10 @@ export default function CertificationsSection() {
           </motion.h2>
 
           <motion.div
-            initial={{ opacity: 0, x: -15 }}
+            initial={{ opacity: 0, x: -8 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
             className="flex items-center gap-3 shrink-0"
           >
             <div className="h-[1px] w-8 md:w-16 bg-[var(--color-accent-primary)] hidden md:block" />
@@ -475,10 +475,10 @@ export default function CertificationsSection() {
 
         {/* ── Archive strip ── */}
         <motion.div
-          initial={{ opacity: 0, x: -8 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.18, ease: 'easeOut' }}
           className="mb-8 grid gap-4 border-y py-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center"
           style={{ borderColor: 'color-mix(in srgb, var(--color-page-foreground) 7%, transparent)' }}
         >
@@ -527,7 +527,7 @@ export default function CertificationsSection() {
             const isLastOdd = CERTS.length % 2 !== 0 && i === CERTS.length - 1;
             return (
               <div key={cert.id} className={`flex flex-col ${isLastOdd ? 'lg:col-span-2' : ''}`}>
-                <CertRow cert={cert} index={i} />
+                <CertRow cert={cert} />
               </div>
             )
           })}
