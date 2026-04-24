@@ -22,6 +22,7 @@ type CursorLensProps = {
   hoverBlobOpacity?: number;
   parallaxStrength?: number;
   showBackground?: boolean;
+  animateBackground?: boolean;
   bgBlobCount?: number;
   bgBlobSize?: number;
   bgBlobComplexity?: number;
@@ -48,6 +49,7 @@ export default function CursorLens({
   hoverBlobOpacity = 0.12,
   parallaxStrength = 4,
   showBackground = true,
+  animateBackground = true,
   bgBlobCount = 15,
   bgBlobSize = 80,
   bgBlobSpeed = 1,
@@ -292,7 +294,7 @@ export default function CursorLens({
           >
             <g filter={`url(#${bgFilterId})`}>
               {backgroundBlobs.map((blob, i) =>
-                reducedMotion ? (
+                reducedMotion || !animateBackground ? (
                   <circle
                     key={i}
                     cx={blob.x[0]}
@@ -553,5 +555,4 @@ const imageStyle: React.CSSProperties = {
   backgroundRepeat: "no-repeat",
   willChange: "transform",
 };
-
 

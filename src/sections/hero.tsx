@@ -85,6 +85,7 @@ export default function Hero() {
               hoverBlobOpacity={palette.heroHoverBlobOpacity}
               parallaxStrength={8}
               showBackground={true}
+              animateBackground={false}
               bgBlobCount={11}
               bgBlobSize={300}
               bgBlobComplexity={140}
