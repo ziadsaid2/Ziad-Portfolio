@@ -61,7 +61,7 @@ export default function Hero() {
             showBackground={true}
             bgBlobCount={11}
             bgBlobSize={300}
-            bgBlobComplexity={200}
+            bgBlobComplexity={140}
             bgBlobSpeed={0.8}
             blobStrokeWidth={1.5}
             blobSize={240}
