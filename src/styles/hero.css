@@ -169,7 +169,6 @@
     border-color var(--motion-fast) var(--ease-out-expo),
     background-color var(--motion-base) var(--ease-in-out-standard),
     box-shadow var(--motion-base) var(--ease-in-out-standard);
-  cursor: none !important;
 }
 
 .hero-social-link::before {
@@ -325,7 +324,6 @@
     -webkit-backdrop-filter: blur(12px);
     color: var(--color-accent-primary);
     pointer-events: auto;
-    cursor: none !important;
   }
 
   .hero-social-toggle__icon {

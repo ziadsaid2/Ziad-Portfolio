@@ -96,7 +96,6 @@ export default function ThemeToggle() {
                     : "text-[var(--color-page-foreground)] opacity-60 hover:opacity-100"
                 }`}
                 style={{
-                  cursor: "none",
                   padding: isActive && isExpanded ? "0 1.2rem 0 1rem" : "0 0.8rem",
                 }}
               >

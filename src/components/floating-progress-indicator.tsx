@@ -106,7 +106,7 @@ export default function FloatingProgressIndicator() {
         return (
           <div
             key={item.id}
-            className="group relative flex items-center justify-end h-8 md:h-10 w-10 md:w-12 cursor-none pointer-events-auto"
+            className="group relative flex items-center justify-end h-8 md:h-10 w-10 md:w-12 pointer-events-auto"
             data-cursor="interactive"
             onMouseEnter={() => setHoveredId(item.id)}
             onMouseLeave={() => setHoveredId(null)}

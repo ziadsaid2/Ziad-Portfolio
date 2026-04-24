@@ -34,8 +34,6 @@
   --ease-in-out-standard: cubic-bezier(0.65, 0, 0.35, 1);
 
   --z-floating: 40;
-  --z-cursor: 50;
-
   --color-page-background: oklch(0.92 0.015 80);
   --color-page-foreground: oklch(0.24 0.02 80);
   --color-hero-background: oklch(0.92 0.015 80);
@@ -87,6 +85,30 @@ body {
   font-size: var(--text-body);
   line-height: var(--leading-body);
   font-kerning: normal;
+  cursor: auto !important;
+}
+
+html,
+body,
+body * {
+  cursor: auto;
+}
+
+a,
+button,
+[role="button"],
+summary,
+label,
+select,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
+input,
+textarea {
+  cursor: text;
 }
 
 h1,
@@ -111,44 +133,10 @@ a {
 }
 
 
-.cursor-follower {
-  --cursor-dot-x: 0px;
-  --cursor-dot-y: 0px;
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-cursor);
-  opacity: 0;
-  transition: opacity var(--motion-fast) var(--ease-out-expo);
-}
-
-.cursor-follower.is-visible {
-  opacity: 1;
-}
-
-.cursor-follower__dot {
-  position: absolute;
-  border-radius: var(--radius-pill);
-  width: 0.5rem;
-  height: 0.5rem;
-  background: var(--color-cursor);
-  transform: translate3d(var(--cursor-dot-x), var(--cursor-dot-y), 0) translate(-50%, -50%);
-}
-
-@media (hover: hover) and (pointer: fine) {
-
-  html,
-  body,
-  body * {
-    cursor: none !important;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
 
   .theme-toggle,
-  .theme-toggle__thumb,
-  .cursor-follower {
+  .theme-toggle__thumb {
     transition-duration: 0.01ms !important;
   }
 }

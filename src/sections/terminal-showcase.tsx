@@ -22,13 +22,6 @@ const RotatingEarth = dynamic(() => import('@/components/ui/wireframe-dotted-glo
   loading: () => <div className="relative z-10 h-[184px] w-full max-w-[18.5rem]" aria-hidden="true" />,
 })
 
-const CyberBackground = dynamic(
-  () => import('@/components/ui/cyber-background').then((mod) => mod.CyberBackground),
-  {
-    ssr: false,
-  },
-)
-
 const GLOBE_INITIAL_ROTATION: [number, number] = [-31, -22]
 
 export default function TerminalShowcase() {
@@ -74,16 +67,6 @@ export default function TerminalShowcase() {
 
       {/* Top fade — blends with the section above */}
       <div className="absolute top-0 inset-x-0 h-56 bg-gradient-to-b from-[var(--color-page-background)] via-[color-mix(in_srgb,var(--color-page-background)_40%,transparent)] to-transparent z-10 pointer-events-none" />
-      {shouldMountDecor ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: false, amount: 0, margin: "800px 0px" }}
-          transition={{ duration: 1 }}
-        >
-          <CyberBackground />
-        </motion.div>
-      ) : null}
       
       <div className="mx-auto max-w-[1420px] relative z-10">
         {/* Section Header */}
