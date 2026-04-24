@@ -72,6 +72,18 @@
   z-index: 0;
 }
 
+.hero-canvas-fallback {
+  position: absolute;
+  inset: 0;
+  background-color: var(--hero-canvas-background, transparent);
+  background-image: url("/hero/base-1800.png");
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: var(--hero-image-size, auto 145vh);
+  transform: scale(1.1);
+  transform-origin: center bottom;
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
