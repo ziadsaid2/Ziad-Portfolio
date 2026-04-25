@@ -33,7 +33,7 @@ interface InteractiveGlobeProps {
 }
 
 const DEFAULT_MARKERS: GlobeMarker[] = [
-  { lat: 30.04, lng: 31.24, label: 'Cairo' },
+  { lat: 31.2, lng: 29.92, label: 'Alexandria' },
   { lat: 51.51, lng: -0.13, label: 'London' },
   { lat: 25.2, lng: 55.27, label: 'Dubai' },
   { lat: 1.35, lng: 103.82, label: 'Singapore' },
@@ -41,10 +41,10 @@ const DEFAULT_MARKERS: GlobeMarker[] = [
 ]
 
 const DEFAULT_CONNECTIONS: GlobeConnection[] = [
-  { from: [30.04, 31.24], to: [51.51, -0.13] },
-  { from: [30.04, 31.24], to: [25.2, 55.27] },
-  { from: [30.04, 31.24], to: [1.35, 103.82] },
-  { from: [30.04, 31.24], to: [37.78, -122.42] },
+  { from: [31.2, 29.92], to: [51.51, -0.13] },
+  { from: [31.2, 29.92], to: [25.2, 55.27] },
+  { from: [31.2, 29.92], to: [1.35, 103.82] },
+  { from: [31.2, 29.92], to: [37.78, -122.42] },
   { from: [51.51, -0.13], to: [37.78, -122.42] },
 ]
 

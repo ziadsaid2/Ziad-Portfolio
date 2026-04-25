@@ -108,7 +108,7 @@ function ProfileContent() {
           <span className="text-[9px] font-mono text-[var(--color-accent-primary)]/70 mt-0.5">Full Stack Developer</span>
         </div>
       </div>
-      <InfoRow label="LOCATION">Cairo, Egypt</InfoRow>
+      <InfoRow label="LOCATION">Alexandria, Egypt</InfoRow>
       <InfoRow label="STATUS">
         <span className="flex items-center justify-end gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
