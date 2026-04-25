@@ -4,10 +4,17 @@ import * as motion from 'motion/react-client'
 import { useEffect, useState, useRef, useMemo } from 'react'
 
 export function ExperienceBackground() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [mousePos, setMousePos] = useState({ x: 50, y: 32 })
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const finePointerQuery = window.matchMedia('(pointer: fine)')
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    if (!finePointerQuery.matches || reducedMotionQuery.matches) {
+      return
+    }
+
     let rafId = 0
     let pending: { x: number; y: number } | null = null
 

@@ -42,7 +42,11 @@
 .hero-frame::before {
   content: "";
   position: absolute;
-  inset: var(--space-md) var(--space-md) 1.5rem var(--space-md);
+  inset:
+    clamp(0.85rem, 1.8vw, 1.15rem)
+    clamp(0.85rem, 1.8vw, 1.15rem)
+    clamp(1rem, 2.5vw, 1.35rem)
+    clamp(0.85rem, 1.8vw, 1.15rem);
   border: 1px solid color-mix(in srgb, var(--color-accent-primary) 16%, var(--color-hero-line));
   border-radius: 0;
   pointer-events: none;
@@ -559,7 +563,7 @@
   }
 
   .hero-frame::before {
-    inset: var(--space-sm) clamp(0.875rem, 3vw, var(--space-md));
+    inset: 0.6rem 0.65rem 0.9rem;
   }
 
   .hero-resume-preview {

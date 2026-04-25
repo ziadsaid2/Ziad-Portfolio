@@ -101,7 +101,7 @@ export default function TerminalShowcase() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1.12fr)_360px] lg:gap-8">
+        <div className="grid grid-cols-1 items-start gap-8 xl:grid-cols-[minmax(0,1.12fr)_360px] xl:gap-8">
           {/* Terminal Section */}
           <motion.div
             initial={{ opacity: 0, y: 10, scale: 0.99 }}
@@ -122,12 +122,12 @@ export default function TerminalShowcase() {
           </motion.div>
 
           {/* Technical Manifest Sidebar */}
-          <div className="order-2 flex flex-col gap-8 lg:order-2">
-            <div className="flex flex-col gap-4">
+          <div className="order-2 xl:order-2">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1 xl:gap-4">
               {/* Cheat-sheet Panel */}
               <motion.div
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md"
+                className="min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md md:h-full"
               >
                 <div className="mb-4 flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-[var(--color-accent-primary)]" />
@@ -156,7 +156,7 @@ export default function TerminalShowcase() {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onMouseEnter={() => setIsGlobePaused(false)}
                 onMouseLeave={() => setIsGlobePaused(true)}
-                className="hidden lg:block relative min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md"
+                className="relative hidden min-w-0 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_15%,var(--color-hero-line))] bg-[color-mix(in_srgb,var(--color-hero-background)_40%,transparent)] p-4 backdrop-blur-md md:block"
               >
                 <div className="mb-3 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">

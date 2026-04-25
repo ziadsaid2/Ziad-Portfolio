@@ -30,7 +30,7 @@ export default function ExperienceSection() {
   return (
     <section 
       id="experience" 
-      className="relative w-full px-4 pt-12 pb-40 sm:px-6 lg:px-8 z-10"
+      className="relative z-10 w-full px-4 pt-12 pb-28 sm:px-6 sm:pb-32 lg:px-8 xl:pb-40"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -46,10 +46,10 @@ export default function ExperienceSection() {
 
 
       <div className="mx-auto max-w-[1420px] relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 gap-10 lg:gap-12 xl:grid-cols-[280px_1fr] xl:gap-14">
           {/* Left: Sticky Header */}
           <div className="relative w-full shrink-0">
-            <div className="lg:sticky lg:top-56 xl:top-60 flex flex-col gap-6 relative group/header">
+            <div className="relative flex flex-col gap-6 group/header xl:sticky xl:top-48 2xl:top-60">
               {/* Corner Accents for Title Area */}
               <div className="absolute -top-4 -left-4 w-8 h-8 border-t border-l border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-tl-lg pointer-events-none" />
               <div className="absolute top-1/2 -right-4 w-4 h-[1px] bg-gradient-to-l from-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] to-transparent pointer-events-none" />
@@ -80,7 +80,7 @@ export default function ExperienceSection() {
                </div>
              </div>
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-20 lg:block bg-gradient-to-b from-transparent via-[color-mix(in_srgb,var(--color-page-background)_72%,transparent)] to-[var(--color-page-background)]" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-20 bg-gradient-to-b from-transparent via-[color-mix(in_srgb,var(--color-page-background)_72%,transparent)] to-[var(--color-page-background)] xl:block" />
           </div>
 
           {/* Right: Scrollable Cards */}

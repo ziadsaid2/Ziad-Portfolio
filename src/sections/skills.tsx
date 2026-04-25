@@ -262,10 +262,10 @@ export default function SkillsSection() {
         <div className="relative">
 
           {/* The horizontal axis: Core Skills label — robot — AI Support label */}
-          <div className="flex items-start justify-between gap-4 xl:gap-0">
+          <div className="flex flex-col gap-8 md:gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-0">
 
             {/* ─── LEFT: Core Skills column ─── */}
-            <div className="flex-1 max-w-[420px] xl:max-w-[440px] z-10 pt-2">
+            <div className="z-10 w-full flex-1 pt-2 xl:max-w-[440px]">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -284,9 +284,9 @@ export default function SkillsSection() {
             </div>
 
             {/* ─── CENTER: Robot ─── */}
-            <div className="hidden xl:flex flex-col items-center justify-start shrink-0 w-[340px] 2xl:w-[400px] relative">
+            <div className="relative order-2 hidden w-full items-center justify-center md:flex xl:order-none xl:w-[340px] xl:shrink-0 2xl:w-[400px]">
               {/* Robot container */}
-              <div className="relative w-full min-h-[30rem] 2xl:min-h-[34rem] flex items-center justify-center">
+              <div className="relative flex min-h-[22rem] w-full max-w-[34rem] items-center justify-center md:min-h-[24rem] xl:min-h-[30rem] xl:max-w-none 2xl:min-h-[34rem]">
                 
                 {/* HUD Elements around robot to fill space */}
                 <div className="absolute inset-0 z-10 pointer-events-none select-none">
@@ -342,13 +342,13 @@ export default function SkillsSection() {
             </div>
 
             {/* ─── RIGHT: AI Support column ─── */}
-            <div className="flex-1 max-w-[420px] xl:max-w-[440px] z-10 pt-2">
+            <div className="z-10 w-full flex-1 pt-2 xl:max-w-[440px]">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="flex items-center gap-3 mb-5 flex-row-reverse"
+                className="mb-5 flex items-center gap-3 xl:flex-row-reverse"
               >
                 <div className="w-1.5 h-1.5 bg-[var(--color-accent-primary)] rounded-full" />
                 <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color-mix(in_srgb,var(--color-page-foreground)_90%,transparent)] font-bold">

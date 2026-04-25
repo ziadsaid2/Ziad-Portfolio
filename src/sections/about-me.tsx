@@ -129,10 +129,10 @@ function BioContent() {
   return (
     <div className="p-5 flex flex-col gap-4 overflow-y-auto" style={{ maxHeight: 310 }}>
       <span className="text-[9px] font-mono tracking-widest text-[var(--color-page-foreground)]/25 select-none">
-        // bio.txt — read only
+        {'// bio.txt - read only'}
       </span>
       <p className="text-[14px] leading-[1.85] text-[var(--color-page-foreground)]/75 font-sans">
-        I'm a{' '}
+        I&apos;m a{' '}
         <span className="text-[var(--color-accent-primary)] font-semibold">Full Stack Developer</span>{' '}
         contributing to SaaS products, CRM systems, and messaging platforms —
         solving complex technical issues and improving integrations across services.
@@ -165,20 +165,20 @@ function StackContent() {
   return (
     <div className="p-4 font-mono text-[10px] overflow-y-auto">
       <span className="text-[8px] tracking-widest text-[var(--color-page-foreground)]/25 block mb-2">
-        // focus.json
+        {'// focus.json'}
       </span>
       <div className="leading-[1.85] text-[var(--color-page-foreground)]/55">
         <span className="text-[var(--color-page-foreground)]/25">{'{'}</span>
         {entries.map(([key, val], idx) => (
           <div key={key} className="pl-4">
-            <span className="text-[var(--color-accent-primary)]">"{key}"</span>
+            <span className="text-[var(--color-accent-primary)]">{`"${key}"`}</span>
             <span className="text-[var(--color-page-foreground)]/25">: </span>
             {Array.isArray(val) ? (
               <>
                 <span className="text-[var(--color-page-foreground)]/25">{'['}</span>
                 {val.map((item, i) => (
                   <div key={i} className="pl-4">
-                    <span className="text-[var(--color-page-foreground)]/55">"{item}"</span>
+                    <span className="text-[var(--color-page-foreground)]/55">{`"${item}"`}</span>
                     {i < val.length - 1 && <span className="text-[var(--color-page-foreground)]/25">,</span>}
                   </div>
                 ))}
@@ -187,7 +187,7 @@ function StackContent() {
             ) : typeof val === 'boolean' ? (
               <span className="text-emerald-500">{String(val)}</span>
             ) : (
-              <span className="text-[var(--color-page-foreground)]/55">"{val}"</span>
+              <span className="text-[var(--color-page-foreground)]/55">{`"${val}"`}</span>
             )}
             {idx < entries.length - 1 && <span className="text-[var(--color-page-foreground)]/25">,</span>}
           </div>
@@ -336,6 +336,55 @@ function OsWindow({
   )
 }
 
+function CompactWindowCard({
+  meta,
+  className,
+}: {
+  meta: WindowMeta
+  className?: string
+}) {
+  const Icon = meta.icon
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className={cn(
+        'overflow-hidden rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-page-foreground)_9%,transparent)] bg-[color-mix(in_srgb,var(--color-page-background)_86%,transparent)] shadow-[0_1rem_2.5rem_-1.75rem_rgba(0,0,0,0.28)] backdrop-blur-md',
+        className,
+      )}
+    >
+      <div className="flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--color-page-foreground)_7%,transparent)] bg-[color-mix(in_srgb,var(--color-page-foreground)_2.5%,transparent)] px-4 py-3">
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="h-[11px] w-[11px] rounded-full bg-[#FF5F57]" />
+          <span className="h-[11px] w-[11px] rounded-full bg-[#FEBC2E]" />
+          <span className="h-[11px] w-[11px] rounded-full bg-[color-mix(in_srgb,var(--color-page-foreground)_12%,transparent)]" />
+        </div>
+
+        <div className="min-w-0 flex-1 flex items-center gap-2">
+          <Icon
+            className="h-[10px] w-[10px] shrink-0 opacity-55"
+            style={{ color: `var(${meta.accentVar})` }}
+          />
+          <span className="truncate text-[9px] font-mono uppercase tracking-[0.22em] text-[var(--color-page-foreground)]/45">
+            {meta.title}
+          </span>
+        </div>
+
+        <span className="text-[8px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-primary)]/60">
+          Active
+        </span>
+      </div>
+
+      <div className="min-w-0">
+        {CONTENT[meta.id]}
+      </div>
+    </motion.article>
+  )
+}
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main section
@@ -426,13 +475,52 @@ export default function AboutMeSection() {
           </motion.div>
         </motion.div>
 
+        {/* ── Tablet / Mobile Surface ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="xl:hidden"
+        >
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.25rem] border border-[color-mix(in_srgb,var(--color-page-foreground)_8%,transparent)] bg-[color-mix(in_srgb,var(--color-page-background)_88%,transparent)] px-4 py-3 backdrop-blur-md">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-[var(--color-accent-primary)]" />
+                <span className="h-px w-8 bg-[color-mix(in_srgb,var(--color-accent-primary)_35%,transparent)]" />
+              </div>
+              <span className="text-[9px] font-mono uppercase tracking-[0.24em] text-[var(--color-page-foreground)]/48">
+                Portable Session
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[9px] font-mono uppercase tracking-[0.18em] text-[var(--color-page-foreground)]/38">
+              <span>Alexandria // Available</span>
+              {clockTime && <span>{clockTime}</span>}
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {WINDOWS.map((meta) => (
+              <CompactWindowCard
+                key={meta.id}
+                meta={meta}
+                className={cn(
+                  meta.id === 'bio' && 'md:col-span-2',
+                  meta.id === 'contact' && 'md:col-span-2',
+                )}
+              />
+            ))}
+          </div>
+        </motion.div>
+
         {/* ── Desktop ── */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.85, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-xl overflow-hidden max-w-6xl mx-auto w-full"
+          className="relative hidden w-full max-w-6xl mx-auto overflow-hidden rounded-xl xl:block"
           style={{
             height: 540,
             border: '1px solid color-mix(in srgb, var(--color-page-foreground) 11%, transparent)',

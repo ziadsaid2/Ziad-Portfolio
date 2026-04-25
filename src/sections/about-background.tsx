@@ -8,6 +8,13 @@ export function AboutBackground() {
   const rafRef = useRef<number>(0)
 
   useEffect(() => {
+    const finePointerQuery = window.matchMedia('(pointer: fine)')
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    if (!finePointerQuery.matches || reducedMotionQuery.matches) {
+      return
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       cancelAnimationFrame(rafRef.current)
       rafRef.current = requestAnimationFrame(() => {
@@ -78,7 +85,7 @@ export function AboutBackground() {
       {/* ───── LAYER 4: IDENTITY DATA MARKERS ───── */}
       <div className="absolute inset-0 opacity-40 dark:opacity-20">
          {/* Identity Stamp (Right) */}
-         <div className="absolute right-12 top-24 flex flex-col items-end gap-2 rotate-90 origin-right">
+         <div className="absolute right-12 top-24 hidden origin-right rotate-90 flex-col items-end gap-2 lg:flex">
             <div className="flex items-center gap-4">
                <div className="h-px w-24 bg-[var(--color-accent-primary)]" />
                <span className="font-mono text-[9px] font-black uppercase tracking-[0.5em] text-[var(--color-accent-primary)]">Verified_Entity // ZS94</span>
@@ -99,7 +106,7 @@ export function AboutBackground() {
 
       {/* ───── LAYER 6: BIOMETRIC SIDEBARS (LEFT & RIGHT) ───── */}
       {/* Left: Vertical Measurement Scale (Ruler) */}
-      <div className="absolute left-10 top-20 bottom-20 w-[1px] bg-gradient-to-b from-transparent via-[var(--color-accent-primary)] to-transparent opacity-60">
+      <div className="absolute bottom-20 left-10 top-20 hidden w-[1px] bg-gradient-to-b from-transparent via-[var(--color-accent-primary)] to-transparent opacity-60 md:block">
         {Array.from({ length: 25 }).map((_, i) => (
           <div 
             key={i} 
@@ -119,7 +126,7 @@ export function AboutBackground() {
       </div>
 
       {/* Right: Perpetual HUD Arc */}
-      <div className="absolute right-[-150px] top-1/2 -translate-y-1/2 w-[300px] h-[600px] opacity-[0.12] dark:opacity-[0.06] pointer-events-none">
+      <div className="pointer-events-none absolute right-[-150px] top-1/2 hidden h-[600px] w-[300px] -translate-y-1/2 opacity-[0.12] dark:opacity-[0.06] xl:block">
          <svg viewBox="0 0 100 200" className="w-full h-full">
             <path d="M 100 10 A 90 90 0 0 0 100 190" fill="none" stroke="var(--color-accent-primary)" strokeWidth="0.5" strokeDasharray="5 5" />
             <path d="M 100 30 A 70 70 0 0 0 100 170" fill="none" stroke="var(--color-accent-primary)" strokeWidth="0.8" />
@@ -139,7 +146,7 @@ export function AboutBackground() {
       </div>
 
       {/* ───── LAYER 7: MILESTONE TIMEMARKS ───── */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.35] dark:opacity-[0.2]">
+      <div className="pointer-events-none absolute inset-0 hidden opacity-[0.35] dark:opacity-[0.2] md:block">
         <div className="absolute top-[15%] left-[20%] flex flex-col items-center">
             <div className="w-[1.5px] h-6 bg-[var(--color-accent-primary)] mb-1.5" />
             <span className="font-mono text-[7px] font-black uppercase tracking-widest text-[var(--color-accent-primary)]">2018_START</span>
@@ -159,20 +166,20 @@ export function AboutBackground() {
       </div>
 
       {/* ───── LAYER 8: REINFORCED CORNER HUD ───── */}
-      <div className="absolute top-12 left-12 p-3 border-l-2 border-t-2 border-[var(--color-accent-primary)]/20 opacity-50 flex flex-col gap-1">
+      <div className="absolute top-12 left-12 hidden flex-col gap-1 border-l-2 border-t-2 border-[var(--color-accent-primary)]/20 p-3 opacity-50 md:flex">
           <span className="font-mono text-[9px] font-black uppercase tracking-widest text-[var(--color-accent-primary)]">[SEC_03]</span>
           <span className="font-mono text-[6px] opacity-60">AUTH: VERIFIED</span>
       </div>
 
       {/* ───── LAYER 9: DUAL ROTATING WIREFRAMES ───── */}
-      <div className="absolute bottom-16 left-12 w-20 h-20 opacity-[0.14] dark:opacity-[0.08]">
+      <div className="absolute bottom-16 left-12 hidden h-20 w-20 opacity-[0.14] dark:opacity-[0.08] md:block">
         <svg viewBox="0 0 100 100" className="w-full h-full">
           <path d="M 50 10 L 90 30 L 90 70 L 50 90 L 10 70 L 10 30 Z" fill="none" stroke="var(--color-accent-primary)" strokeWidth="1.5" />
           <path d="M 50 10 L 50 90 M 90 30 L 10 70 M 90 70 L 10 30" stroke="var(--color-accent-primary)" strokeWidth="0.8" opacity="0.5" />
         </svg>
       </div>
 
-      <div className="absolute top-16 right-40 w-14 h-14 opacity-[0.1] dark:opacity-[0.06]">
+      <div className="absolute top-16 right-40 hidden h-14 w-14 opacity-[0.1] dark:opacity-[0.06] md:block">
         <svg viewBox="0 0 100 100" className="w-full h-full">
           <path d="M 50 10 L 90 50 L 50 90 L 10 50 Z" fill="none" stroke="var(--color-accent-primary)" strokeWidth="1.5" />
         </svg>
