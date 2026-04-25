@@ -96,6 +96,16 @@ const scrollResetScript = `
   });
 `;
 
+const flovooWidgetScript = `
+    (function(w,d,s,o){
+    w.FlovooWidget=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    var js=d.createElement(s);js.async=1;
+    js.src='https://bff.flovoo.dev/widget/v1/flovoo-widget.min.js';
+    d.head.appendChild(js);
+  })(window,document,'script','flovoo');
+  flovoo('init', { widgetId: '8beaaa00-30b9-4113-b116-b01e0d4267b2', language: 'en' });
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -122,6 +132,7 @@ export default function RootLayout({
         <ServerBootstrapScripts
           themeScript={themeScript}
           scrollResetScript={scrollResetScript}
+          flovooWidgetScript={flovooWidgetScript}
         />
         <BootScreen />
         <ThemeToggle />
