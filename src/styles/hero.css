@@ -75,6 +75,7 @@
 .hero-canvas-fallback {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   background-color: var(--hero-canvas-background, transparent);
   background-image: url("/hero/base-1800.png");
   background-position: center bottom;
@@ -82,6 +83,17 @@
   background-size: var(--hero-image-size, auto 145vh);
   transform: scale(1.1);
   transform-origin: center bottom;
+}
+
+.hero-canvas-fallback--scenic {
+  background-image:
+    repeating-linear-gradient(90deg,
+      color-mix(in srgb, var(--color-hero-line) 12%, transparent) 0 1px,
+      transparent 1px 54px),
+    repeating-linear-gradient(180deg,
+      color-mix(in srgb, var(--color-hero-line) 9%, transparent) 0 1px,
+      transparent 1px 54px),
+    url("/hero/base-1800.png");
 }
 
 .hero-content {

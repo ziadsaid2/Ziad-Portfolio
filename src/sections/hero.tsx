@@ -9,14 +9,107 @@ import { themePalette, useTheme } from "@/components/theme-store";
 const HERO_BASE_IMAGE = "/hero/base-1800.png";
 const HERO_REVEAL_IMAGE = "/hero/reveal-1800.png";
 
+type HeroQualityTier = "static" | "lite" | "full";
+type HeroBrowserProfile = "safari-static" | "adaptive";
+
+type NavigatorWithDeviceHints = Navigator & {
+  deviceMemory?: number;
+  connection?: {
+    effectiveType?: string;
+    saveData?: boolean;
+    addEventListener?: (type: "change", listener: EventListener) => void;
+    removeEventListener?: (type: "change", listener: EventListener) => void;
+  };
+};
+
 const CursorLens = dynamic(() => import("@/components/cursor-lens"), {
   ssr: false,
 });
 
-function HeroCanvasFallback({ backgroundColor }: { backgroundColor: string }) {
+const resolveHeroBrowserProfile = (): HeroBrowserProfile => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  const vendor = navigator.vendor.toLowerCase();
+  const isWebKit = userAgent.includes("applewebkit/");
+  const isSafari =
+    vendor.includes("apple") &&
+    isWebKit &&
+    !userAgent.includes("crios/") &&
+    !userAgent.includes("fxios/") &&
+    !userAgent.includes("edg/") &&
+    !userAgent.includes("opr/");
+
+  return isSafari ? "safari-static" : "adaptive";
+};
+
+const resolveHeroQualityTier = ({
+  finePointer,
+  reducedMotion,
+}: {
+  finePointer: boolean;
+  reducedMotion: boolean;
+}): HeroQualityTier => {
+  if (!finePointer || reducedMotion) {
+    return "static";
+  }
+
+  if (resolveHeroBrowserProfile() === "safari-static") {
+    return "static";
+  }
+
+  const navigatorWithHints = navigator as NavigatorWithDeviceHints;
+  const connection = navigatorWithHints.connection;
+  const memory = navigatorWithHints.deviceMemory;
+  const cores = navigatorWithHints.hardwareConcurrency;
+  let lowPowerScore = 0;
+
+  if (connection?.saveData) {
+    lowPowerScore += 2;
+  }
+
+  if (connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g") {
+    lowPowerScore += 2;
+  } else if (connection?.effectiveType === "3g") {
+    lowPowerScore += 1;
+  }
+
+  if (typeof memory === "number") {
+    if (memory <= 2) {
+      lowPowerScore += 2;
+    } else if (memory <= 4) {
+      lowPowerScore += 1;
+    }
+  } else {
+    lowPowerScore += 1;
+  }
+
+  if (typeof cores === "number") {
+    if (cores <= 2) {
+      lowPowerScore += 2;
+    } else if (cores <= 4) {
+      lowPowerScore += 1;
+    }
+  } else {
+    lowPowerScore += 1;
+  }
+
+  return lowPowerScore >= 2 ? "lite" : "full";
+};
+
+function HeroCanvasFallback({
+  backgroundColor,
+  qualityTier,
+}: {
+  backgroundColor: string;
+  qualityTier: HeroQualityTier;
+}) {
+  const className =
+    qualityTier === "full"
+      ? "hero-canvas-fallback"
+      : "hero-canvas-fallback hero-canvas-fallback--scenic";
+
   return (
     <div
-      className="hero-canvas-fallback"
+      className={className}
       style={{ "--hero-canvas-background": backgroundColor } as CSSProperties}
     />
   );
@@ -25,26 +118,71 @@ function HeroCanvasFallback({ backgroundColor }: { backgroundColor: string }) {
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isHeroInView, setIsHeroInView] = useState(true);
-  const [canRenderLens, setCanRenderLens] = useState(false);
+  const [heroQualityTier, setHeroQualityTier] = useState<HeroQualityTier>("static");
   const [shouldRenderLens, setShouldRenderLens] = useState(false);
   const theme = useTheme();
   const palette = themePalette[theme];
+  const canRenderLens = heroQualityTier !== "static";
+  const lensQuality = heroQualityTier === "full" ? "full" : "lite";
+  const lensTuning =
+    heroQualityTier === "full"
+      ? {
+          parallaxStrength: 8,
+          showBackground: true,
+          animateBackground: true,
+          bgBlobCount: 11,
+          bgBlobSize: 300,
+          bgBlobComplexity: 140,
+          bgBlobSpeed: 0.8,
+          blobStrokeWidth: 1.5,
+          blobSize: 240,
+          shapeComplexity: 1.5,
+          roughness: 50,
+          speed: 600,
+          viscosity: 4,
+        }
+      : {
+          parallaxStrength: 4,
+          showBackground: true,
+          animateBackground: false,
+          bgBlobCount: 5,
+          bgBlobSize: 220,
+          bgBlobComplexity: 0,
+          bgBlobSpeed: 0.6,
+          blobStrokeWidth: 1.1,
+          blobSize: 180,
+          shapeComplexity: 0.95,
+          roughness: 0,
+          speed: 420,
+          viscosity: 3,
+        };
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointerQuery = window.matchMedia("(pointer: fine)");
+    const navigatorWithHints = navigator as NavigatorWithDeviceHints;
+    const connection = navigatorWithHints.connection;
 
-    const updateLensSupport = () => {
-      setCanRenderLens(finePointerQuery.matches && !reducedMotionQuery.matches);
+    const updateHeroQuality = () => {
+      const nextTier = resolveHeroQualityTier({
+        finePointer: finePointerQuery.matches,
+        reducedMotion: reducedMotionQuery.matches,
+      });
+
+      setHeroQualityTier((currentTier) =>
+        currentTier === nextTier ? currentTier : nextTier,
+      );
     };
 
-    updateLensSupport();
-    reducedMotionQuery.addEventListener("change", updateLensSupport);
-    finePointerQuery.addEventListener("change", updateLensSupport);
+    updateHeroQuality();
+    reducedMotionQuery.addEventListener("change", updateHeroQuality);
+    finePointerQuery.addEventListener("change", updateHeroQuality);
+    connection?.addEventListener?.("change", updateHeroQuality);
 
     return () => {
-      reducedMotionQuery.removeEventListener("change", updateLensSupport);
-      finePointerQuery.removeEventListener("change", updateLensSupport);
+      reducedMotionQuery.removeEventListener("change", updateHeroQuality);
+      finePointerQuery.removeEventListener("change", updateHeroQuality);
+      connection?.removeEventListener?.("change", updateHeroQuality);
     };
   }, []);
 
@@ -139,11 +277,15 @@ export default function Hero() {
         </div>
 
         <div className="hero-canvas" aria-hidden="true">
-          <HeroCanvasFallback backgroundColor={palette.heroBackground} />
-          {isHeroInView && shouldRenderLens ? (
+          <HeroCanvasFallback
+            backgroundColor={palette.heroBackground}
+            qualityTier={heroQualityTier}
+          />
+          {isHeroInView && canRenderLens && shouldRenderLens ? (
             <CursorLens
               baseImage={HERO_BASE_IMAGE}
               revealImage={HERO_REVEAL_IMAGE}
+              quality={lensQuality}
               objectFit="contain"
               imagePosition="center bottom"
               imageSize="var(--hero-image-size, auto 145vh)"
@@ -152,19 +294,7 @@ export default function Hero() {
               bgBlobOpacity={palette.heroLineOpacity}
               hoverBlobColor={palette.heroHoverBlob}
               hoverBlobOpacity={palette.heroHoverBlobOpacity}
-              parallaxStrength={8}
-              showBackground={true}
-              animateBackground={true}
-              bgBlobCount={11}
-              bgBlobSize={300}
-              bgBlobComplexity={140}
-              bgBlobSpeed={0.8}
-              blobStrokeWidth={1.5}
-              blobSize={240}
-              shapeComplexity={1.5}
-              roughness={50}
-              speed={600}
-              viscosity={4}
+              {...lensTuning}
             />
           ) : null}
         </div>

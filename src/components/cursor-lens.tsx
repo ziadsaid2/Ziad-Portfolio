@@ -12,6 +12,7 @@ import {
 type CursorLensProps = {
   baseImage?: string;
   revealImage?: string;
+  quality?: "lite" | "full";
   objectFit?: "cover" | "contain";
   imagePosition?: string;
   imageSize?: string;
@@ -39,6 +40,7 @@ type CursorLensProps = {
 export default function CursorLens({
   baseImage = "/hero/base-1800.png",
   revealImage = "/hero/reveal-1800.png",
+  quality = "full",
   objectFit = "cover",
   imagePosition = "center",
   imageSize,
@@ -65,9 +67,12 @@ export default function CursorLens({
   const [isHovering, setIsHovering] = React.useState(false);
   const [isTouch, setIsTouch] = React.useState(false);
   const [reducedMotion, setReducedMotion] = React.useState(false);
+  const isLite = quality === "lite";
   const isActive = isHovering || previewCursor;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const animationFrameRef = React.useRef<number | null>(null);
+  const pendingPointRef = React.useRef<{ x: number; y: number } | null>(null);
 
   const random = (min: number, max: number) =>
     Math.random() * (max - min) + min;
@@ -142,59 +147,80 @@ export default function CursorLens({
     [parallaxStrength * 2.5, -parallaxStrength * 2.5],
   );
 
-  React.useEffect(() => {
-    if (isTouch) return;
-
-    let rafId = 0;
-    let pendingX = 0;
-    let pendingY = 0;
-    let hasPending = false;
-
-    const flush = () => {
-      rafId = 0;
-      if (!hasPending || !containerRef.current) return;
-      hasPending = false;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const isInside =
-        pendingX >= rect.left &&
-        pendingX <= rect.right &&
-        pendingY >= rect.top &&
-        pendingY <= rect.bottom;
-
-      if (isInside) {
-        const x = pendingX - rect.left;
-        const y = pendingY - rect.top;
-        mouseX.set(x);
-        mouseY.set(y);
-        mouseXRatio.set((x / rect.width) * 2 - 1);
-        mouseYRatio.set((y / rect.height) * 2 - 1);
-      } else {
-        mouseXRatio.set(0);
-        mouseYRatio.set(0);
-      }
-    };
-
-    const handleMove = (e: MouseEvent) => {
-      pendingX = e.clientX;
-      pendingY = e.clientY;
-      hasPending = true;
-      if (!rafId) rafId = requestAnimationFrame(flush);
-    };
-
-    window.addEventListener("mousemove", handleMove, { passive: true });
-
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [mouseX, mouseY, mouseXRatio, mouseYRatio, isTouch]);
-
-  const handleMouseEnter = () => setIsHovering(true);
-  const handleMouseLeave = () => {
+  const resetPointer = React.useCallback(() => {
     setIsHovering(false);
     mouseXRatio.set(0);
     mouseYRatio.set(0);
+    pendingPointRef.current = null;
+  }, [mouseXRatio, mouseYRatio]);
+
+  const flushPointerPosition = React.useCallback(() => {
+    animationFrameRef.current = null;
+
+    if (!containerRef.current || !pendingPointRef.current) {
+      return;
+    }
+
+    const { x: clientX, y: clientY } = pendingPointRef.current;
+    pendingPointRef.current = null;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    mouseX.set(x);
+    mouseY.set(y);
+    mouseXRatio.set((x / rect.width) * 2 - 1);
+    mouseYRatio.set((y / rect.height) * 2 - 1);
+  }, [mouseX, mouseY, mouseXRatio, mouseYRatio]);
+
+  const queuePointerPosition = React.useCallback(
+    (clientX: number, clientY: number) => {
+      pendingPointRef.current = { x: clientX, y: clientY };
+
+      if (animationFrameRef.current === null) {
+        animationFrameRef.current = requestAnimationFrame(flushPointerPosition);
+      }
+    },
+    [flushPointerPosition],
+  );
+
+  React.useEffect(() => {
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  const handlePointerEnter = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isTouch) {
+      return;
+    }
+
+    setIsHovering(true);
+    queuePointerPosition(event.clientX, event.clientY);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isTouch) {
+      return;
+    }
+
+    if (!isHovering) {
+      setIsHovering(true);
+    }
+
+    queuePointerPosition(event.clientX, event.clientY);
+  };
+
+  const handlePointerLeave = () => {
+    if (animationFrameRef.current !== null) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    resetPointer();
   };
 
   const time = useTime();
@@ -234,6 +260,64 @@ export default function CursorLens({
 
   const cursorFilterId = React.useId();
   const maskId = React.useId();
+  const shouldAnimateBackground = !isLite && !reducedMotion && animateBackground;
+  const shouldUseBackgroundFilter = !isLite && bgBlobComplexity > 0;
+  const shouldUseCursorFilter = !isLite && roughness > 0;
+
+  const renderCursorShape = (fill: string) => {
+    if (isLite) {
+      return (
+        <>
+          <motion.circle cx={head.x} cy={head.y} r={blobSize * 0.68} fill={fill} />
+          <motion.circle cx={body1.x} cy={body1.y} r={blobSize * 0.5} fill={fill} />
+          <motion.circle cx={body2.x} cy={body2.y} r={blobSize * 0.34} fill={fill} />
+        </>
+      );
+    }
+
+    return (
+      <>
+        <motion.circle cx={sat1X} cy={sat1Y} r={blobSize * 0.6} fill={fill} />
+        <motion.circle cx={sat2X} cy={sat2Y} r={blobSize * 0.5} fill={fill} />
+        <motion.circle cx={head.x} cy={head.y} r={blobSize * 0.7} fill={fill} />
+        <motion.circle cx={body1.x} cy={body1.y} r={blobSize * 0.6} fill={fill} />
+        <motion.circle cx={body2.x} cy={body2.y} r={blobSize * 0.5} fill={fill} />
+        <motion.circle cx={tail.x} cy={tail.y} r={blobSize * 0.3} fill={fill} />
+      </>
+    );
+  };
+
+  const backgroundShapes = backgroundBlobs.map((blob, i) =>
+    shouldAnimateBackground ? (
+      <motion.circle
+        key={i}
+        initial={{ cx: blob.x[0], cy: blob.y[0] }}
+        animate={{ cx: blob.x, cy: blob.y }}
+        transition={{
+          duration: blob.duration,
+          repeat: Infinity,
+          repeatType: "mirror" as const,
+          ease: "easeInOut",
+        }}
+        r={blob.sizeFactor * bgBlobSize}
+        fill="none"
+        stroke={blobOutlineColor}
+        strokeWidth={blobStrokeWidth}
+        strokeOpacity={bgBlobOpacity}
+      />
+    ) : (
+      <circle
+        key={i}
+        cx={blob.x[0]}
+        cy={blob.y[0]}
+        r={blob.sizeFactor * bgBlobSize}
+        fill="none"
+        stroke={blobOutlineColor}
+        strokeWidth={blobStrokeWidth}
+        strokeOpacity={bgBlobOpacity}
+      />
+    ),
+  );
 
   if (isTouch) {
     return (
@@ -257,31 +341,34 @@ export default function CursorLens({
   return (
     <div
       ref={containerRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onPointerEnter={handlePointerEnter}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       style={{ ...containerStyle, backgroundColor: backgroundColor }}
     >
       {showBackground && (
         <>
-          <svg width="0" height="0" style={{ position: "absolute" }}>
-            <defs>
-              <filter id={bgFilterId}>
-                <feTurbulence
-                  type="fractalNoise"
-                  baseFrequency="0.008"
-                  numOctaves="3"
-                  result="noise"
-                />
-                <feDisplacementMap
-                  in="SourceGraphic"
-                  in2="noise"
-                  scale={bgBlobComplexity}
-                  xChannelSelector="R"
-                  yChannelSelector="G"
-                />
-              </filter>
-            </defs>
-          </svg>
+          {shouldUseBackgroundFilter ? (
+            <svg width="0" height="0" style={{ position: "absolute" }}>
+              <defs>
+                <filter id={bgFilterId}>
+                  <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.008"
+                    numOctaves="3"
+                    result="noise"
+                  />
+                  <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    scale={bgBlobComplexity}
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                  />
+                </filter>
+              </defs>
+            </svg>
+          ) : null}
 
           <svg
             style={{
@@ -292,71 +379,45 @@ export default function CursorLens({
               overflow: "visible",
             }}
           >
-            <g filter={`url(#${bgFilterId})`}>
-              {backgroundBlobs.map((blob, i) =>
-                reducedMotion || !animateBackground ? (
-                  <circle
-                    key={i}
-                    cx={blob.x[0]}
-                    cy={blob.y[0]}
-                    r={blob.sizeFactor * bgBlobSize}
-                    fill="none"
-                    stroke={blobOutlineColor}
-                    strokeWidth={blobStrokeWidth}
-                    strokeOpacity={bgBlobOpacity}
-                  />
-                ) : (
-                  <motion.circle
-                    key={i}
-                    initial={{ cx: blob.x[0], cy: blob.y[0] }}
-                    animate={{ cx: blob.x, cy: blob.y }}
-                    transition={{
-                      duration: blob.duration,
-                      repeat: Infinity,
-                      repeatType: "mirror" as const,
-                      ease: "easeInOut",
-                    }}
-                    r={blob.sizeFactor * bgBlobSize}
-                    fill="none"
-                    stroke={blobOutlineColor}
-                    strokeWidth={blobStrokeWidth}
-                    strokeOpacity={bgBlobOpacity}
-                  />
-                ),
-              )}
-            </g>
+            {shouldUseBackgroundFilter ? (
+              <g filter={`url(#${bgFilterId})`}>{backgroundShapes}</g>
+            ) : (
+              <g>{backgroundShapes}</g>
+            )}
           </svg>
         </>
       )}
 
-      <svg width="0" height="0" style={{ position: "absolute" }}>
-        <defs>
-          <filter id={cursorFilterId}>
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.015"
-              numOctaves="2"
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale={roughness}
-              xChannelSelector="R"
-              yChannelSelector="G"
-              result="distorted"
-            />
-            <feGaussianBlur in="distorted" stdDeviation="12" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9"
-              result="goo"
-            />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-          </filter>
-        </defs>
-      </svg>
+      {shouldUseCursorFilter ? (
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <filter id={cursorFilterId}>
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.015"
+                numOctaves="2"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale={roughness}
+                xChannelSelector="R"
+                yChannelSelector="G"
+                result="distorted"
+              />
+              <feGaussianBlur in="distorted" stdDeviation="12" result="blur" />
+              <feColorMatrix
+                in="blur"
+                mode="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9"
+                result="goo"
+              />
+              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+          </defs>
+        </svg>
+      ) : null}
 
       <svg
         style={{
@@ -369,7 +430,7 @@ export default function CursorLens({
       >
         <defs>
           <mask id={maskId}>
-            <g filter={`url(#${cursorFilterId})`}>
+            <g filter={shouldUseCursorFilter ? `url(#${cursorFilterId})` : undefined}>
               <motion.g
                 animate={{
                   opacity: isActive ? 1 : 0,
@@ -387,42 +448,7 @@ export default function CursorLens({
                 }}
                 style={{ transformOrigin: "center" }}
               >
-                <motion.circle
-                  cx={sat1X}
-                  cy={sat1Y}
-                  r={blobSize * 0.6}
-                  fill="white"
-                />
-                <motion.circle
-                  cx={sat2X}
-                  cy={sat2Y}
-                  r={blobSize * 0.5}
-                  fill="white"
-                />
-                <motion.circle
-                  cx={head.x}
-                  cy={head.y}
-                  r={blobSize * 0.7}
-                  fill="white"
-                />
-                <motion.circle
-                  cx={body1.x}
-                  cy={body1.y}
-                  r={blobSize * 0.6}
-                  fill="white"
-                />
-                <motion.circle
-                  cx={body2.x}
-                  cy={body2.y}
-                  r={blobSize * 0.5}
-                  fill="white"
-                />
-                <motion.circle
-                  cx={tail.x}
-                  cy={tail.y}
-                  r={blobSize * 0.3}
-                  fill="white"
-                />
+                {renderCursorShape("white")}
               </motion.g>
             </g>
           </mask>
@@ -455,7 +481,7 @@ export default function CursorLens({
         animate={{ opacity: isActive ? hoverBlobOpacity : 0 }}
         transition={{ duration: isActive ? 0.35 : 0.55 }}
       >
-        <g filter={`url(#${cursorFilterId})`}>
+        <g filter={shouldUseCursorFilter ? `url(#${cursorFilterId})` : undefined}>
           <motion.g
             animate={{
               scale: isActive ? 1 : 0.6,
@@ -468,42 +494,7 @@ export default function CursorLens({
             }}
             style={{ transformOrigin: "center" }}
           >
-            <motion.circle
-              cx={sat1X}
-              cy={sat1Y}
-              r={blobSize * 0.6}
-              fill={hoverBlobColor}
-            />
-            <motion.circle
-              cx={sat2X}
-              cy={sat2Y}
-              r={blobSize * 0.5}
-              fill={hoverBlobColor}
-            />
-            <motion.circle
-              cx={head.x}
-              cy={head.y}
-              r={blobSize * 0.7}
-              fill={hoverBlobColor}
-            />
-            <motion.circle
-              cx={body1.x}
-              cy={body1.y}
-              r={blobSize * 0.6}
-              fill={hoverBlobColor}
-            />
-            <motion.circle
-              cx={body2.x}
-              cy={body2.y}
-              r={blobSize * 0.5}
-              fill={hoverBlobColor}
-            />
-            <motion.circle
-              cx={tail.x}
-              cy={tail.y}
-              r={blobSize * 0.3}
-              fill={hoverBlobColor}
-            />
+            {renderCursorShape(hoverBlobColor)}
           </motion.g>
         </g>
       </motion.svg>
@@ -555,4 +546,3 @@ const imageStyle: React.CSSProperties = {
   backgroundRepeat: "no-repeat",
   willChange: "transform",
 };
-
