@@ -150,10 +150,10 @@ function SkillColumn({
             )}
           >
             <div className={cn("flex items-center gap-2 mb-0.5", isRight && "flex-row-reverse")}>
-              <span className="font-mono text-[8px] uppercase tracking-[0.3em] font-black text-[var(--color-accent-primary)] leading-none">
+              <span className="font-mono text-[9px] uppercase tracking-[0.3em] font-black text-[var(--color-accent-primary)] leading-none">
                 0{groupIdx + 1}
               </span>
-              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--color-page-foreground)_70%,transparent)] font-bold">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--color-page-foreground)_70%,transparent)] font-bold">
                 {group.title}
               </span>
               <div className="h-[1px] w-4 bg-[color-mix(in_srgb,var(--color-page-foreground)_30%,transparent)]" />
