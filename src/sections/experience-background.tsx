@@ -8,21 +8,33 @@ export function ExperienceBackground() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let rafId = 0
+    let pending: { x: number; y: number } | null = null
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return
       const rect = containerRef.current.getBoundingClientRect()
-      setMousePos({
+      pending = {
         x: ((e.clientX - rect.left) / rect.width) * 100,
         y: ((e.clientY - rect.top) / rect.height) * 100,
-      })
+      }
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          if (pending) setMousePos(pending)
+          rafId = 0
+        })
+      }
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   const telemetryData = useMemo(() => {
-    return Array.from({ length: 120 }).map((_, i) => ({
+    return Array.from({ length: 40 }).map((_, i) => ({
       id: i,
       sys: `SYS_${(i % 99).toString().padStart(2, '0')}`,
       hex: `0x${((i * 73 + 64) % 256).toString(16).toUpperCase().padStart(2, '0')}`,
@@ -146,24 +158,9 @@ export function ExperienceBackground() {
         <line x1="0" y1="0" x2="100%" y2="100%" stroke="var(--color-accent-primary)" strokeWidth="0.5" strokeDasharray="100 200" className="opacity-10" />
         <line x1="100%" y1="0" x2="0" y2="100%" stroke="var(--color-accent-primary)" strokeWidth="0.5" strokeDasharray="100 200" className="opacity-10" />
 
-        {/* Animated Horizontal Scanbeams */}
-        <motion.rect
-          width="100%"
-          height="1"
-          fill="url(#laser-grad)"
-          initial={{ y: "-10%" }}
-          animate={{ y: "110%" }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.rect
-          width="100%"
-          height="1"
-          fill="url(#laser-grad)"
-          initial={{ y: "-10%" }}
-          animate={{ y: "110%" }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 5 }}
-          className="opacity-50"
-        />
+        {/* Static Horizontal Scanbeams */}
+        <rect width="100%" height="1" y="30%" fill="url(#laser-grad)" />
+        <rect width="100%" height="1" y="70%" fill="url(#laser-grad)" className="opacity-50" />
       </svg>
 
       {/* 6. LAYER: Repeating Vertical Scale */}

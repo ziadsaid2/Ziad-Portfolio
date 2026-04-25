@@ -56,7 +56,7 @@ export default function TerminalShowcase() {
   }, [bootReady, shouldMountDecor])
 
   return (
-    <section ref={sectionRef} id="terminal" className="relative py-16 px-6 md:px-10 overflow-hidden">
+    <section ref={sectionRef} id="terminal" className="relative py-24 md:py-28 px-6 md:px-10 overflow-hidden">
       {/* Page background */}
       <div className="absolute inset-0 bg-[var(--color-page-background)]" />
 
@@ -65,7 +65,7 @@ export default function TerminalShowcase() {
       
       <div className="mx-auto max-w-[1420px] relative z-10">
         {/* Section Header */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative group/header">
+        <div className="mb-12 md:mb-14 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative group/header">
           {/* Large Background Watermark (Ghost Text) - Compact & Black */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none overflow-hidden opacity-[0.12] dark:opacity-[0.02] transition-opacity duration-1000 group-hover/header:opacity-[0.18] dark:group-hover/header:opacity-[0.04]">
             <span className="text-[5.5rem] md:text-[8rem] font-black tracking-tighter uppercase whitespace-nowrap text-[var(--color-accent-primary)] block text-right leading-none">

@@ -495,10 +495,8 @@ export default function CertificationsSection() {
             >
               verify --credentials --all
             </span>
-            <motion.span
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ repeat: Infinity, duration: 1.1, ease: 'linear' }}
-              className="inline-block h-[11px] w-[5px]"
+            <span
+              className="inline-block h-[11px] w-[5px] animate-pulse"
               style={{ background: 'color-mix(in srgb, var(--color-accent-primary) 35%, transparent)' }}
             />
           </div>

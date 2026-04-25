@@ -1,6 +1,5 @@
 'use client'
 
-import * as motion from 'motion/react-client'
 import { useEffect, useRef } from 'react'
 
 export function AboutBackground() {
@@ -50,27 +49,19 @@ export function AboutBackground() {
 
       {/* ───── LAYER 2: TOPOGRAPHIC TOPOLOGY (JOURNEY LINES) ───── */}
       <svg className="absolute inset-0 w-full h-full opacity-[0.08] dark:opacity-[0.04]">
-        <defs>
-          <filter id="liquid">
-            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="35" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-        <g filter="url(#liquid)">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <ellipse
-              key={i}
-              cx="50%"
-              cy="50%"
-              rx={`${20 + i * 15}%`}
-              ry={`${15 + i * 12}%`}
-              fill="none"
-              stroke="var(--color-accent-primary)"
-              strokeWidth="0.5"
-              className="opacity-40"
-            />
-          ))}
-        </g>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <ellipse
+            key={i}
+            cx="50%"
+            cy="50%"
+            rx={`${20 + i * 15}%`}
+            ry={`${15 + i * 12}%`}
+            fill="none"
+            stroke="var(--color-accent-primary)"
+            strokeWidth="0.5"
+            className="opacity-40"
+          />
+        ))}
       </svg>
 
       {/* ───── LAYER 3: INTERACTIVE BIOMETRIC SCANNER ───── */}
@@ -129,7 +120,7 @@ export function AboutBackground() {
 
       {/* Right: Perpetual HUD Arc */}
       <div className="absolute right-[-150px] top-1/2 -translate-y-1/2 w-[300px] h-[600px] opacity-[0.12] dark:opacity-[0.06] pointer-events-none">
-         <svg viewBox="0 0 100 200" className="w-full h-full animate-[spin_40s_linear_infinite]">
+         <svg viewBox="0 0 100 200" className="w-full h-full">
             <path d="M 100 10 A 90 90 0 0 0 100 190" fill="none" stroke="var(--color-accent-primary)" strokeWidth="0.5" strokeDasharray="5 5" />
             <path d="M 100 30 A 70 70 0 0 0 100 170" fill="none" stroke="var(--color-accent-primary)" strokeWidth="0.8" />
             <circle cx="30" cy="100" r="4" fill="var(--color-accent-primary)" />
@@ -175,14 +166,14 @@ export function AboutBackground() {
 
       {/* ───── LAYER 9: DUAL ROTATING WIREFRAMES ───── */}
       <div className="absolute bottom-16 left-12 w-20 h-20 opacity-[0.14] dark:opacity-[0.08]">
-        <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_25s_linear_infinite]">
+        <svg viewBox="0 0 100 100" className="w-full h-full">
           <path d="M 50 10 L 90 30 L 90 70 L 50 90 L 10 70 L 10 30 Z" fill="none" stroke="var(--color-accent-primary)" strokeWidth="1.5" />
           <path d="M 50 10 L 50 90 M 90 30 L 10 70 M 90 70 L 10 30" stroke="var(--color-accent-primary)" strokeWidth="0.8" opacity="0.5" />
         </svg>
       </div>
 
       <div className="absolute top-16 right-40 w-14 h-14 opacity-[0.1] dark:opacity-[0.06]">
-        <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_15s_linear_infinite_reverse]">
+        <svg viewBox="0 0 100 100" className="w-full h-full">
           <path d="M 50 10 L 90 50 L 50 90 L 10 50 Z" fill="none" stroke="var(--color-accent-primary)" strokeWidth="1.5" />
         </svg>
       </div>

@@ -37,8 +37,8 @@ type CursorLensProps = {
 };
 
 export default function CursorLens({
-  baseImage = "/hero/base.png",
-  revealImage = "/hero/reveal.png",
+  baseImage = "/hero/base-1800.png",
+  revealImage = "/hero/reveal-1800.png",
   objectFit = "cover",
   imagePosition = "center",
   imageSize,

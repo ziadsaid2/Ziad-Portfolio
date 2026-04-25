@@ -290,17 +290,9 @@ export default function SkillsSection() {
                 
                 {/* HUD Elements around robot to fill space */}
                 <div className="absolute inset-0 z-10 pointer-events-none select-none">
-                  {/* Animated HUD Rings */}
-                  <motion.div 
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[52%] w-[18rem] h-[18rem] 2xl:w-[22rem] 2xl:h-[22rem] border border-dashed border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-full opacity-40"
-                  />
-                  <motion.div 
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[52%] w-[15rem] h-[15rem] 2xl:w-[19rem] 2xl:h-[19rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_8%,transparent)] rounded-full opacity-20"
-                  />
+                  {/* HUD Rings (static) */}
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[52%] w-[18rem] h-[18rem] 2xl:w-[22rem] 2xl:h-[22rem] border border-dashed border-[color-mix(in_srgb,var(--color-accent-primary)_15%,transparent)] rounded-full opacity-40" />
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[52%] w-[15rem] h-[15rem] 2xl:w-[19rem] 2xl:h-[19rem] border border-[color-mix(in_srgb,var(--color-accent-primary)_8%,transparent)] rounded-full opacity-20" />
 
                   {/* Corner Brackets */}
                   <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[52%] w-[12rem] h-[15rem] 2xl:w-[14rem] 2xl:h-[18rem]">
