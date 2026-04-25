@@ -70,7 +70,7 @@ export function ExperienceBackground() {
       />
 
       {/* 4. LAYER: HUD Telemetry Sidebars */}
-      <div className="absolute left-6 top-0 bottom-0 w-28 hidden 2xl:flex flex-col gap-2 py-20 opacity-100 dark:opacity-[0.15] overflow-hidden">
+      <div className="absolute left-6 top-0 bottom-0 w-28 hidden lg:flex flex-col gap-2 py-20 opacity-100 dark:opacity-[0.15] overflow-hidden">
         <motion.div 
           animate={{ y: ["0%", "-50%"] }} 
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
@@ -85,7 +85,7 @@ export function ExperienceBackground() {
         </motion.div>
       </div>
 
-      <div className="absolute right-6 top-0 bottom-0 w-28 hidden 2xl:flex flex-col gap-2 py-20 opacity-100 dark:opacity-[0.15] overflow-hidden">
+      <div className="absolute right-6 top-0 bottom-0 w-28 hidden lg:flex flex-col gap-2 py-20 opacity-100 dark:opacity-[0.15] overflow-hidden">
         <motion.div 
           animate={{ y: ["-50%", "0%"] }} 
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
