@@ -3,6 +3,7 @@ export const profileLinks = {
   github: "https://github.com/ziadsaid2",
   linkedin: "https://www.linkedin.com/in/ziadsaid/",
   whatsapp: "https://wa.me/201010695751",
+  resume: "/cv/ziad-said-cv.pdf",
 } as const;
 
 export const profileContacts = [

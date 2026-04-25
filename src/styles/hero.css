@@ -220,6 +220,175 @@
   width: 1rem;
 }
 
+.hero-resume-trigger {
+  position: relative;
+  display: inline-flex;
+}
+
+.hero-resume-preview {
+  position: absolute;
+  top: -0.45rem;
+  right: -0.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary) 24%, var(--color-hero-line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-page-background) 85%, transparent);
+  color: var(--color-accent-primary);
+  opacity: 0;
+  transform: scale(0.86);
+  pointer-events: none;
+  transition:
+    opacity var(--motion-fast) var(--ease-out-expo),
+    transform var(--motion-fast) var(--ease-out-expo),
+    border-color var(--motion-fast) var(--ease-out-expo);
+}
+
+.hero-resume-trigger:hover .hero-resume-preview,
+.hero-resume-trigger:focus-within .hero-resume-preview {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.hero-resume-preview:hover,
+.hero-resume-preview:focus-visible {
+  border-color: color-mix(in srgb, var(--color-accent-primary) 58%, var(--color-hero-line));
+  outline: none;
+}
+
+.hero-resume-preview__icon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.hero-resume-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.hero-resume-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--color-page-background) 25%, black 75%);
+  opacity: 0.88;
+}
+
+.hero-resume-modal__panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(78rem, calc(100vw - 3rem));
+  height: min(92vh, 64rem);
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary) 24%, var(--color-hero-line));
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--color-toggle-background) 96%, transparent) 0%,
+      color-mix(in srgb, var(--color-page-background) 95%, transparent) 100%);
+  box-shadow:
+    0 2.5rem 6rem -2rem color-mix(in srgb, black 65%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-accent-primary) 8%, transparent);
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.hero-resume-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-accent-primary) 12%, var(--color-hero-line));
+}
+
+.hero-resume-modal__label {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-page-foreground) 68%, transparent);
+}
+
+.hero-resume-modal__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.hero-resume-modal__download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.2rem;
+  padding: 0 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary) 24%, var(--color-hero-line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-toggle-background) 92%, transparent);
+  color: var(--color-page-foreground);
+  font-size: 0.88rem;
+  transition:
+    color var(--motion-fast) var(--ease-out-expo),
+    border-color var(--motion-fast) var(--ease-out-expo),
+    transform var(--motion-fast) var(--ease-out-expo);
+}
+
+.hero-resume-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary) 18%, var(--color-hero-line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-toggle-background) 90%, transparent);
+  color: var(--color-page-foreground);
+}
+
+.hero-resume-modal__download:hover,
+.hero-resume-modal__download:focus-visible,
+.hero-resume-modal__close:hover,
+.hero-resume-modal__close:focus-visible {
+  color: var(--color-accent-primary);
+  border-color: color-mix(in srgb, var(--color-accent-primary) 52%, var(--color-hero-line));
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.hero-resume-modal__close-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.hero-resume-modal__document {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: white;
+}
+
+.hero-resume-modal__fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+.hero-resume-modal__fallback a {
+  color: var(--color-accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .hero-copy--role {
   grid-column: 1 / -1;
   grid-row: 3;
@@ -379,6 +548,30 @@
 
   .hero-frame::before {
     inset: var(--space-sm) clamp(0.875rem, 3vw, var(--space-md));
+  }
+
+  .hero-resume-preview {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  .hero-resume-modal {
+    padding: 0.6rem;
+  }
+
+  .hero-resume-modal__panel {
+    width: 100%;
+    height: min(92vh, 100%);
+    border-radius: 0.5rem;
+  }
+
+  .hero-resume-modal__bar {
+    padding: 0.85rem;
+  }
+
+  .hero-resume-modal__actions {
+    gap: 0.5rem;
   }
 
   .hero-copy--social,

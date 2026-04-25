@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronUp, FileText } from "lucide-react";
+import { useEffect, useId, useState } from "react";
+import { ChevronUp, Eye, FileText, X } from "lucide-react";
+import { createPortal } from "react-dom";
 
 import { profileLinks } from "@/lib/profile";
 import { cn } from "@/lib/utils";
@@ -90,9 +91,34 @@ export default function ButtonSocialIconDemo({
   githubHref = profileLinks.github,
   linkedinHref = profileLinks.linkedin,
   whatsappHref = profileLinks.whatsapp,
-  resumeHref,
+  resumeHref = profileLinks.resume,
 }: ButtonSocialIconDemoProps) {
   const [expanded, setExpanded] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const previewTitleId = useId();
+
+  useEffect(() => {
+    if (!isPreviewOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsPreviewOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPreviewOpen]);
 
   const items: SocialItem[] = [
     {
@@ -110,35 +136,116 @@ export default function ButtonSocialIconDemo({
       icon: <WhatsAppIcon />,
       label: "WhatsApp",
     },
-    {
-      href: resumeHref,
-      icon: <FileText aria-hidden="true" className="hero-social-link__icon" strokeWidth={1.9} />,
-      label: "View CV",
-    },
   ];
 
   return (
-    <div className={cn("hero-social-expandable", expanded && "is-expanded", className)}>
-      <button
-        aria-expanded={expanded}
-        aria-label={expanded ? "Close social links" : "Open social links"}
-        className="hero-social-toggle"
-        data-cursor="interactive"
-        onClick={() => setExpanded((v) => !v)}
-        type="button"
-      >
-        <ChevronUp aria-hidden="true" className="hero-social-toggle__icon" strokeWidth={1.5} />
-      </button>
+    <>
+      <div className={cn("hero-social-expandable", expanded && "is-expanded", className)}>
+        <button
+          aria-expanded={expanded}
+          aria-label={expanded ? "Close social links" : "Open social links"}
+          className="hero-social-toggle"
+          data-cursor="interactive"
+          onClick={() => setExpanded((v) => !v)}
+          type="button"
+        >
+          <ChevronUp aria-hidden="true" className="hero-social-toggle__icon" strokeWidth={1.5} />
+        </button>
 
-      <div
-        aria-label="Social links"
-        className="hero-social-group"
-        role="group"
-      >
-        {items.map((item) => (
-          <SocialAction key={item.label} {...item} />
-        ))}
+        <div
+          aria-label="Social links"
+          className="hero-social-group"
+          role="group"
+        >
+          {items.map((item) => (
+            <SocialAction key={item.label} {...item} />
+          ))}
+          {resumeHref ? (
+            <div className="hero-resume-trigger">
+              <a
+                aria-label="Download CV"
+                className="hero-social-link"
+                data-cursor="interactive"
+                download
+                href={resumeHref}
+              >
+                <FileText
+                  aria-hidden="true"
+                  className="hero-social-link__icon"
+                  strokeWidth={1.9}
+                />
+                <span className="sr-only">Download CV</span>
+              </a>
+              <button
+                aria-label="Preview CV"
+                className="hero-resume-preview"
+                data-cursor="interactive"
+                onClick={() => setIsPreviewOpen(true)}
+                type="button"
+              >
+                <Eye aria-hidden="true" className="hero-resume-preview__icon" strokeWidth={1.9} />
+                <span className="sr-only">Preview CV</span>
+              </button>
+            </div>
+          ) : null}
+        </div>
       </div>
-    </div>
+      {isPreviewOpen && resumeHref && typeof document !== "undefined"
+        ? createPortal(
+        <div
+          aria-labelledby={previewTitleId}
+          aria-modal="true"
+          className="hero-resume-modal"
+          role="dialog"
+        >
+          <button
+            aria-label="Close CV preview"
+            className="hero-resume-modal__backdrop"
+            onClick={() => setIsPreviewOpen(false)}
+            type="button"
+          />
+          <div className="hero-resume-modal__panel">
+            <div className="hero-resume-modal__bar">
+              <p className="hero-resume-modal__label" id={previewTitleId}>
+                CV Preview
+              </p>
+              <div className="hero-resume-modal__actions">
+                <a
+                  className="hero-resume-modal__download"
+                  data-cursor="interactive"
+                  download
+                  href={resumeHref}
+                >
+                  Download
+                </a>
+                <button
+                  aria-label="Close CV preview"
+                  className="hero-resume-modal__close"
+                  data-cursor="interactive"
+                  onClick={() => setIsPreviewOpen(false)}
+                  type="button"
+                >
+                  <X aria-hidden="true" className="hero-resume-modal__close-icon" strokeWidth={1.9} />
+                </button>
+              </div>
+            </div>
+            <object
+              aria-label="CV preview document"
+              className="hero-resume-modal__document"
+              data={resumeHref}
+              type="application/pdf"
+            >
+              <div className="hero-resume-modal__fallback">
+                <a download href={resumeHref}>
+                  Download CV
+                </a>
+              </div>
+            </object>
+          </div>
+        </div>,
+        document.body,
+      )
+        : null}
+    </>
   );
 }
