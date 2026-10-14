@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Anton, Bricolage_Grotesque, Syne, Unbounded } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -133,6 +134,11 @@ export default function RootLayout({
           themeScript={themeScript}
           scrollResetScript={scrollResetScript}
           flovooWidgetScript={flovooWidgetScript}
+        />
+        <Script
+          src="https://bff.flovoo.dev/widget/v1/flovoo-wa-button.min.js"
+          data-widget-id="777969fa-1d6f-45e2-a849-6dea90e91504"
+          strategy="afterInteractive"
         />
         <BootScreen />
         <ThemeToggle />
